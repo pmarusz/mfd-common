@@ -1,0 +1,10 @@
+-r requirements-test.txt  # Ensure tests dependencies are automatically included
+
+# Put additional dependencies needed for development here
+pydocstyle ~= 5.1.1
+flake8
+flake8-builtins
+flake8-docstrings
+black == 20.8b1
+flake8-black == 0.2.4
+click == 8.0.4
