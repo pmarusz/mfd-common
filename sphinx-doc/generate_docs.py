@@ -18,9 +18,9 @@ from sphinx.ext import apidoc
 from sphinx.cmd import build
 
 
-apidoc.main(["-e", "-o", "mfd_ipu", os.path.join("..", "mfd_ipu")])
+apidoc.main(["-e", "-o", "mfd_testing", os.path.join("..", "mfd_testing")])
 
 build.main(["-b", "html", ".", "build/html"])
 
 logging.info("Cleaning folders from build process...")
-shutil.rmtree("mfd_ipu")
+shutil.rmtree("mfd_testing")

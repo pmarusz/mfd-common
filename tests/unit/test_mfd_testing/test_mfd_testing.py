@@ -8,9 +8,9 @@
 #
 # This software and the related documents are provided as is, with no express or implied warranties,
 # other than those that are expressly stated in the License.
-"""Tests for `mfd_ipu` package."""
+"""Tests for `mfd_testing` package."""
 
 
-class TestMfdIpu:
+class TestMfdTesting:
     def test_pass(self):
         assert True

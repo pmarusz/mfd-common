@@ -1,7 +1,7 @@
-.. MFD-Ipu documentation master file, created by
+.. MFD-Testing documentation master file, created by
    nozga <norbert.ozga@intel.com> Feb 02 08:00:00 2023.
 
-Welcome to MFD-Ipu's documentation!
+Welcome to MFD-Testing's documentation!
 ======================================
 
 .. toctree::
@@ -14,7 +14,7 @@ Welcome to MFD-Ipu's documentation!
    :caption: Main Documentation
    :maxdepth: 4
 
-   MFD-Ipu Documentation <mfd_ipu/modules>
+   MFD-Testing Documentation <mfd_testing/modules>
 
 
 .. toctree::

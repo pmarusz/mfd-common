@@ -9,7 +9,7 @@
 # This software and the related documents are provided as is, with no express or implied warranties,
 # other than those that are expressly stated in the License.
 
-# MFD-Ipu documentation build configuration file, created by
+# MFD-Testing documentation build configuration file, created by
 # sphinx-quickstart on Fri Nov 24 14:52:29 2017.
 #
 # This file is execfile()d with the current directory set to its
@@ -63,7 +63,7 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = "MFD-Ipu"
+project = "MFD-Testing"
 project_copyright = """INTEL CONFIDENTIAL
 Copyright 2023 Intel Corporation All Rights Reserved.
 The source code contained or described herein and all documents related to the
@@ -139,7 +139,7 @@ html_static_path = ["_static"]
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "mfd-ipu-doc"
+htmlhelp_basename = "mfd-Testing-doc"
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -162,14 +162,14 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, "mfd-ipu.tex", "MFD-Ipu Documentation", "author", "manual"),
+    (master_doc, "mfd-testing.tex", "MFD-Testing Documentation", "author", "manual"),
 ]
 
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, "mfd-ipu", "MFD-Ipu Documentation", [author], 1)]
+man_pages = [(master_doc, "mfd-testing", "MFD-Testing Documentation", [author], 1)]
 
 # -- Options for Texinfo output -------------------------------------------
 
@@ -179,10 +179,10 @@ man_pages = [(master_doc, "mfd-ipu", "MFD-Ipu Documentation", [author], 1)]
 texinfo_documents = [
     (
         master_doc,
-        "MFD-Ipu",
-        "MFD-Ipu Documentation",
+        "MFD-Testing",
+        "MFD-Testing Documentation",
         author,
-        "MFD-Ipu",
+        "MFD-Testing",
         "One line description of project.",
         "Miscellaneous",
     ),
