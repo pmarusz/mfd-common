@@ -14,21 +14,19 @@
 import argparse
 import sys
 import os
-from codecs import open
 from setuptools import setup, find_packages
-
-assert sys.version_info >= (3, 7, 0), "mfd requires Python 3.7+"
+import codecs
 
 pwd = os.path.abspath(os.path.dirname(__file__))
 version_file_path = os.path.join(pwd, "mfd_testing", "__version__.py")
 
 info = {}
 if os.path.exists(version_file_path):
-    with codec_open(version_file_path, "r", "utf-8") as f:
+    with codecs.open(version_file_path, "r", "utf-8") as f:
         exec(f.read(), info)
 else:
-    info["__title__"] = "mfd-testing"
-    info["__description__"] = "Modular Framework Design (MFD) module for Infrastructure Processing Unit"
+    info["__title__"] = "mfd-wpp-tracing"
+    info["__description__"] = "Wrapper for gathering and translating Event Trace Logs in scenarios as test and ..."
     info["__version__"] = "0.0.0"
 
 with open("requirements.txt") as f:
