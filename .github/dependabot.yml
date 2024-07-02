@@ -5,9 +5,9 @@ version: 2
 updates:
 - package-ecosystem: "pip" # See documentation for possible values
   insecure-external-code-execution: allow
-  open-pull-requests-limit: 0   
+  open-pull-requests-limit: 0
   schedule:
     interval: daily
   directory: "/" # Location of package manifests
   commit-message:
-    prefix: "MFD-5098: Security vulnerability\n\n feature:"
+    prefix: "MFD-5098: Security vulnerability\n\nfeature:"
