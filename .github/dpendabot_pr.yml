@@ -6,8 +6,7 @@ permissions:
 
 jobs:
   dependabot:
-    runs-on: dependabot
-    if: github.actor == 'dependabot[bot]'
+    runs-on: dependabot    
     steps:
     - name: Update PR Description
       uses: actions/github-script@v6
