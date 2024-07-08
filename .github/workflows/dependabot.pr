@@ -1,0 +1,25 @@
+name: Dependabot fetch metadata
+on: pull_request
+
+permissions:
+  pull-requests: write
+
+jobs:
+  dependabot:    
+    runs-on: dependabot    
+    if: github.actor == 'dependabot[bot]'
+    steps:
+    - name: Update PR Description
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        script: |
+          const { issue: { number: issue_number }, repo: { owner, repo } } = context;
+          const newDescription = 'Your new PR description here';
+
+          await github.rest.pulls.update({
+            owner,
+            repo,
+            pull_number: issue_number,
+            body: newDescription
+          });
