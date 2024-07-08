@@ -9,17 +9,6 @@ jobs:
     runs-on: dependabot    
     
     steps:
-    - name: test
-      run: |
-        echo ${{ github.actor }}
-    - name: test1
-      if: ${{ github.actor == 'dependabot[bot]' }}
-      run: |
-        echo ${{ github.actor }}
-    - name: test2
-      if: ${{ github.actor == 'dependabot[bot]' }}
-      run: |
-        echo ${{ github.actor }}
     - name: Update PR Description
       if: ${{ github.actor == 'dependabot[bot]' }}
       uses: actions/github-script@v6
@@ -27,7 +16,7 @@ jobs:
         github-token: ${{secrets.GITHUB_TOKEN}}
         script: |
           const { issue: { number: issue_number }, repo: { owner, repo } } = context;
-          const newDescription = 'Your new PR description here';
+          const newDescription = 'JIRA PR';
 
           await github.rest.pulls.update({
             owner,
