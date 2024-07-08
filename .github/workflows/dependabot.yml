@@ -7,9 +7,13 @@ permissions:
 jobs:
   dependabot:    
     runs-on: dependabot    
-    if: github.actor == 'dependabot'
+    
     steps:
+    - name: test
+      run: |
+        echo ${{ github.actor }}
     - name: Update PR Description
+      if: github.actor == 'dependabot'
       uses: actions/github-script@v6
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
