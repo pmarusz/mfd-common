@@ -7,3 +7,4 @@ pytest-mock ~= 3.5.1
 mlflow==1.0.0
 ydata-profiling==4.0.0
 apache-superset==3.0.0
+vantage6==4.0.0
