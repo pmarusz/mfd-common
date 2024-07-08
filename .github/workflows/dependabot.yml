@@ -11,9 +11,9 @@ jobs:
     steps:
     - name: test
       run: |
-        echo ${{ github.actor }}
+        echo ${{ github.actor }} g
     - name: Update PR Description
-      if: ${{ github.actor == 'dependabot[bot]' }}
+      if: ${{ github.actor == dependabot[bot] }}
       uses: actions/github-script@v6
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
