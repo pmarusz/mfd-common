@@ -1,4 +1,4 @@
-name: Dependabot fetch metadata
+name: Update PR to met autoversioning
 on: 
   pull_request:
     types: [opened]
@@ -29,14 +29,14 @@ jobs:
           const branchName = context.payload.pull_request.head.ref;
 
           const data = {
-            fields: {
-              project: {
-                id: "114600"
+            "fields": {
+              "project": {
+                "id": "114600"
               },
-              summary: title,
-              description: description.split('\n')[0],
-              issuetype: {
-                id: "12"
+              "summary": title,
+              "description": description,
+              "issuetype": {
+                "id": "12"
               },
               "components": [
                 {
