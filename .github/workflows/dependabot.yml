@@ -38,7 +38,7 @@ jobs:
               issuetype: {
                 id: "12"
               },
-            "components: [
+              components: [
                 {
                     name: "_team_only_"
                 }
