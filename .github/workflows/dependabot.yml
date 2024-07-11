@@ -67,7 +67,7 @@ jobs:
           const jira_ticket_id = jira_response.key
           console.log(`Created issue: ${jira_ticket_id}`);
           const new_title = `${jira_ticket_id}: ${title}`;
-          const new_commit_desc = `${new_title}\nfeature: ${title}`;
+          const new_commit_desc = `${new_title}\n\nfeature: ${title}`;
 
           await github.rest.pulls.update({
             owner: context.repo.owner,
