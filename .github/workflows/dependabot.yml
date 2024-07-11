@@ -51,7 +51,7 @@ jobs:
           const jira_ticket_id = "MFD-5172"
           console.log(`Created issue: ${jira_ticket_id}`);
           const new_title = `${jira_ticket_id}: ${title}`
-          const new_commit_desc = `${new_title}\nfeature: ${title}`
+          const new_commit_desc = `${new_title}\n\nfeature: ${title}`
           console.log(new_title)
           console.log(new_commit_desc)
 
@@ -79,6 +79,5 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
-        git branch
         git commit --amend -m '${{ steps.jira-ticket.outputs.result }}'
         git push -f origin HEAD
