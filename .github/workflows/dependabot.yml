@@ -30,17 +30,17 @@ jobs:
 
           const data = {
             "fields": {
-              "project": {
+              project: {
                 "id": "114600"
               },
-              "summary": title,
-              "description": "Test",
-              "issuetype": {
-                "id": "12"
+              summary: "Test",
+              description: "Test",
+              issuetype: {
+                id: "12"
               },
-              "components": [
+            "components: [
                 {
-                    "name": "_team_only_"
+                    name: "_team_only_"
                 }
               ]
             }
