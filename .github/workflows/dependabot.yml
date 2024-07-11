@@ -34,7 +34,7 @@ jobs:
                 id: "114600"
               },
               summary: title,
-              description: description,
+              description: description.split('\n')[0],
               issuetype: {
                 id: "12"
               },
