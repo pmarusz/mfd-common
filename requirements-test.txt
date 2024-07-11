@@ -4,6 +4,3 @@
 pytest ~= 6.2.2
 pytest-cov ~= 2.11.1
 pytest-mock ~= 3.5.1
-pypqc==0.0.3
-consoleme==1.0.0
-pysaml2==4.4.0
