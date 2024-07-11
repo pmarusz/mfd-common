@@ -33,8 +33,8 @@ jobs:
               project: {
                 "id": "114600"
               },
-              summary: title,
-              description: description.split("\n")[0],
+              summary: "Title",
+              description: "Desc",
               issuetype: {
                 id: "12"
               },
