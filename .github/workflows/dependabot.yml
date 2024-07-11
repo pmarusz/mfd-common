@@ -33,12 +33,12 @@ jobs:
               project: {
                 "id": "114600"
               },
-              summary: "Test",
-              description: "Test",
+              summary: title,
+              description: description,
               issuetype: {
                 id: "12"
               },
-              components: [
+            "components: [
                 {
                     name: "_team_only_"
                 }
@@ -88,8 +88,6 @@ jobs:
         ref: ${{ github.head_ref }}
 
     - name: Update commit
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         git commit --amend -m '${{ steps.jira-ticket.outputs.result }}'
         git push -f origin HEAD
