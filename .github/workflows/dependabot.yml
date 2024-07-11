@@ -48,10 +48,26 @@ jobs:
 
           console.log(data)
 
-          const jira_ticket_id = "MFD-5172"
+          const response = await fetch(`${jiraUrl}/rest/api/2/issue`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+          });
+          if (!response.ok) {
+            console.error(`Response status: ${response.status}`);
+            const text = await response.text();
+            console.error(`Response body: ${text}`);
+            throw new Error('Failed to create JIRA issue');
+          }
+          const jira_response = await response.json();
+          const jira_ticket_id = jira_response.key
           console.log(`Created issue: ${jira_ticket_id}`);
           const new_title = `${jira_ticket_id}: ${title}`
-          const new_commit_desc = `${new_title}\n\nfeature: ${title}`
+          const new_commit_desc = `${new_title}\nfeature: ${title}`
           console.log(new_title)
           console.log(new_commit_desc)
 
