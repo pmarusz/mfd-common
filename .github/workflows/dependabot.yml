@@ -34,7 +34,7 @@ jobs:
                 "id": "114600"
               },
               summary: title,
-              description: description,
+              description: description.split("\n")[0],
               issuetype: {
                 id: "12"
               },
@@ -66,10 +66,8 @@ jobs:
           const jira_response = await response.json();
           const jira_ticket_id = jira_response.key
           console.log(`Created issue: ${jira_ticket_id}`);
-          const new_title = `${jira_ticket_id}: ${title}`
-          const new_commit_desc = `${new_title}\nfeature: ${title}`
-          console.log(new_title)
-          console.log(new_commit_desc)
+          const new_title = `${jira_ticket_id}: ${title}`;
+          const new_commit_desc = `${new_title}\nfeature: ${title}`;
 
           await github.rest.pulls.update({
             owner: context.repo.owner,
@@ -78,7 +76,7 @@ jobs:
             title: new_title,
             body: description
           });
-          return new_commit_desc
+          return new_commit_desc;
 
     - name: Checkout repository
       uses: actions/checkout@v4
