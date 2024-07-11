@@ -33,12 +33,12 @@ jobs:
               project: {
                 "id": "114600"
               },
-              summary: "Title",
-              description: "Desc",
+              summary: title,
+              description: description,
               issuetype: {
                 id: "12"
               },
-            "components: [
+              components: [
                 {
                     name: "_team_only_"
                 }
