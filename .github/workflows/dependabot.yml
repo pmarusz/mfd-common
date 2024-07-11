@@ -68,13 +68,8 @@ jobs:
       run: |
         echo "${{ steps.jira-ticket.outputs.result }}"
 
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-        ref: ${{ github.head_ref }}
-
     - name: Update commit
       run: |
+        git clone ${{ github.repository }}
         git commit --amend -m '${{ steps.jira-ticket.outputs.result }}'
         git push -f origin HEAD
