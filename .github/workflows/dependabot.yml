@@ -1,5 +1,5 @@
 name: Update PR to met autoversioning
-on: 
+on:
   pull_request:
     types: [opened]
 
@@ -34,7 +34,7 @@ jobs:
                 "id": "114600"
               },
               "summary": title,
-              "description": description,
+              "description": "Test",
               "issuetype": {
                 "id": "12"
               },
