@@ -27,9 +27,10 @@ jobs:
           const pr = context.payload.pull_request;
           const title = pr.title;
           const description = pr.body;
-          const jiraUrl = process.env.JIRA_URL;
+          const pr_html = pr.html_url;
+          const jira_html = process.env.JIRA_URL;
           const token = process.env.JIRA_API_TOKEN;
-          const branchName = context.payload.pull_request.head.ref;
+          const repo_name_split = pr.base.repo.name.split('.');
           const sanitizeHtml = require('sanitize-html');
           const desciption_no_html_tags = sanitizeHtml(description, {
             allowedTags: [],
@@ -42,21 +43,19 @@ jobs:
                 "id": "114600"
               },
               summary: title,
-              description: desciption_no_html_tags,
+              description: `[${title}|${pr_html}]\n${desciption_no_html_tags}`,
               issuetype: {
                 id: "12"
               },
               components: [
                 {
-                    name: "_team_only_"
+                    name: repo_name_split[repo_name_split.length - 1]
                 }
               ]
             }
           };
 
-          console.log(data)
-
-          const response = await fetch(`${jiraUrl}/rest/api/2/issue`, {
+          const response = await fetch(`${jira_html}/rest/api/2/issue`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
