@@ -9,10 +9,13 @@ permissions:
 jobs:
   dependabot:
     runs-on: dependabot
-
     steps:
+    - uses: actions/setup-node@v3
+      with:
+        node-version: '20.x'
+    - run: npm install sanitize-html
     - name: Create JIRA ticket and PR update
-      uses: actions/github-script@v6
+      uses: actions/github-script@v7
       id: jira-ticket
       env:
         JIRA_URL: https://jira.devtools.intel.com
@@ -27,6 +30,11 @@ jobs:
           const jiraUrl = process.env.JIRA_URL;
           const token = process.env.JIRA_API_TOKEN;
           const branchName = context.payload.pull_request.head.ref;
+          const sanitizeHtml = require('sanitize-html');
+          const desciption_no_html_tags = sanitizeHtml(description, {
+            allowedTags: [],
+            allowedAttributes: {}
+          });
 
           const data = {
             "fields": {
@@ -34,7 +42,7 @@ jobs:
                 "id": "114600"
               },
               summary: title,
-              description: description,
+              description: desciption_no_html_tags,
               issuetype: {
                 id: "12"
               },
