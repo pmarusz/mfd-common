@@ -1,0 +1,116 @@
+name: Update PR to met autoversioning
+
+
+on:
+  repository_dispatch:
+    types: [update-pr]
+
+permissions:
+  pull-requests: write
+  id-token: write
+  contents: read
+
+jobs:
+  dependabot:
+    runs-on: dependabot
+    environment: 'production'
+    env:
+      PREFIX_SECRET_PATH: 'FMSPAMVLT101/LOBUSER_prapp'
+      AAM_SAFE: 'AAM-PR-40726-GHAMFDSAFE'
+      HOST_ID: 'host/github-apps-oidc/40726-MFDUTILSGHA'
+      GH_TOKEN_AAM_ACCOUNT_NAME: 'Operating System-UnmanagedAccounts-AllOSs-sys_ptmfd_github_token'
+      JIRA_TOKEN_AAM_ACCOUNT_NAME: 'Operating System-UnmanagedAccounts-AllOSs-sys_ptmfd_jira_token'
+    steps:
+    - uses: intel-innersource/frameworks.actions.certs@latest
+    - name: Pre Step - get secrets from AAM
+      uses: intel-innersource/frameworks.actions.conjur-fetch@master
+      with:
+        host_id: ${{ env.HOST_ID }}
+        secrets: >
+          ${{ env.PREFIX_SECRET_PATH }}/${{ env.AAM_SAFE }}/${{ env.JIRA_TOKEN_AAM_ACCOUNT_NAME }}/password|JIRA_TOKEN;
+          ${{ env.PREFIX_SECRET_PATH }}/${{ env.AAM_SAFE }}/${{ env.GH_TOKEN_AAM_ACCOUNT_NAME }}/password|GH_TOKEN
+    - uses: actions/setup-node@v3
+      with:
+        node-version: '20.x'
+    - run: npm install sanitize-html
+    - name: Create JIRA ticket and PR update
+      uses: actions/github-script@v7
+      id: jira-ticket
+      env:
+        JIRA_URL: https://jira.devtools.intel.com
+        NODE_EXTRA_CA_CERTS: /usr/local/share/ca-certificates/intel_CA_chain.crt
+      with:
+        result-encoding: string
+        script: |
+          const pr = context.payload.pull_request;
+          const title = "${{ github.event.client_payload.pr_title }}";
+          const description = "${{ github.event.client_payload.pr_body }}";
+          const pr_html = "${{ github.event.client_payload.pr_html }}";
+          const jira_html = process.env.JIRA_URL;
+          const token = process.env.JIRA_TOKEN;
+          const repo_name_split = ${{ github.event.client_payload.repo_name }}";
+          const sanitizeHtml = require('sanitize-html');
+          const desciption_no_html_tags = sanitizeHtml(description, {
+            allowedTags: [],
+            allowedAttributes: {}
+          });
+
+          const data = {
+            "fields": {
+              project: {
+                "id": "114600"
+              },
+              summary: title,
+              description: `[${title}|${pr_html}]\n${desciption_no_html_tags}`,
+              issuetype: {
+                id: "12"
+              },
+              components: [
+                {
+                    name: "_team_only_"
+                }
+              ]
+            }
+          };
+
+          const response = await fetch(`${jira_html}/rest/api/2/issue`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+          });
+          if (!response.ok) {
+            console.error(`Response status: ${response.status}`);
+            const text = await response.text();
+            console.error(`Response body: ${text}`);
+            throw new Error('Failed to create JIRA issue');
+          }
+          const jira_response = await response.json();
+          const jira_ticket_id = jira_response.key
+          console.log(`Created issue: ${jira_ticket_id}`);
+          const new_title = `${jira_ticket_id}: ${title}`;
+          const new_commit_desc = `${new_title}\n\nfeature: ${title}`;
+
+          await github.rest.pulls.update({
+            owner: "${{ github.event.client_payload.owner }}",
+            repo: "${{ github.event.client_payload.repo }}",
+            pull_number: "${{ github.event.client_payload.pr_number }}",
+            title: new_title,
+            body: description
+          });
+          return new_commit_desc;
+
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ env.GH_TOKEN }}
+        fetch-depth: 0
+        ref: "${{ github.event.client_payload.head_ref }}"
+
+    - name: Update commit
+      run: |
+        git commit --amend -m '${{ steps.jira-ticket.outputs.result }}'
+        git push -f origin HEAD
