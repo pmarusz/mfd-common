@@ -1,0 +1,10 @@
+name: Run action to update PR
+on:
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  run_dependabot_pr_updater:
+    uses: intel-sandbox/libraries.python.mfd.mfd-testing/.github/workflows/dependabot.yml@main
+    with:
+      HOST_ID: 'host/github-apps-oidc/40726-MFDTESTINGGHA'
