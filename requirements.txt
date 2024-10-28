@@ -1,6 +1,6 @@
 # Put dependencies required for running properly the module here
-rpyc==5.0.1
-paramiko==2.6.0
+rpyc
+paramiko
 black
 --extra-index-url https://ubit-artifactory-or.intel.com/artifactory/api/pypi/epg-sw-mfd-or-repos/simple
 mfd-typing==1.11.0
