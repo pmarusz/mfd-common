@@ -5,6 +5,5 @@ pydocstyle ~= 5.1.1
 flake8
 flake8-builtins
 flake8-docstrings
-black == 21.0.0
 flake8-black == 0.2.4
 click == 8.0.4
