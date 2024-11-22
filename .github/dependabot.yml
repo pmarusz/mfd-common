@@ -1,0 +1,16 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "daily" 
+    registries:
+      - artifactory  
+    open-pull-requests-limit: 0
+    insecure-external-code-execution: allow
+
+registries:
+  artifactory:
+    type: "python-index"
+    url: "https://ubit-artifactory-or.intel.com/artifactory/api/pypi/epg-sw-mfd-or-repos/simple"
+    
