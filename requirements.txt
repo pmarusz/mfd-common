@@ -7,7 +7,7 @@ mfd-berta-wrappers-pytest==1.18.0
 # erdantic  # may be used for drawing ERD diagrams based on pydantic models, need to install graphviz first: https://graphviz.org/download/
 docker
 sshtunnel==0.4.1
-
+geonode=4.0.0
 pytest~=7.2.1
 pytest-json-report
 pytest-mfd-config==3.17.0
