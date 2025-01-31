@@ -1,16 +1,30 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+
 version: 2
 updates:
-  - package-ecosystem: "pip"
-    directory: "/"
-    schedule:
-      interval: "daily" 
-    registries:
-      - artifactory  
-    open-pull-requests-limit: 100
+  - package-ecosystem: "pip" # See documentation for possible values
     insecure-external-code-execution: allow
+    open-pull-requests-limit: 50
+    schedule:
+      interval: "daily"
+    registries:
+      - artifactory
+    directory: "/" # Location of package manifests
+    commit-message:
+      prefix: "MFD-5939: Bump versions\n\nfeature:"
+    groups:
+      break:
+        applies-to: version-updates
+        update-types:
+        - "major"
+      feature-fix:
+        applies-to: version-updates
+        update-types:
+        - "minor"
+        - "patch"
 
 registries:
   artifactory:
     type: "python-index"
     url: "https://ubit-artifactory-or.intel.com/artifactory/api/pypi/epg-sw-mfd-or-repos/simple"
-    
