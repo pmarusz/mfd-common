@@ -8,6 +8,8 @@ updates:
     open-pull-requests-limit: 50
     schedule:
       interval: "daily"
+      time: "14:00"
+      timezone: "PL"
     registries:
       - artifactory
     directory: "/" # Location of package manifests
