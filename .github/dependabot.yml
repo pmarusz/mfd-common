@@ -18,8 +18,7 @@ updates:
     groups:
       similar-requirements:
         applies-to: version-updates
-        patterns:
-          - ".*~="
+        patterns: ["*~="]
       break:
         patterns: ["**"]
         applies-to: version-updates
