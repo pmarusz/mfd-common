@@ -16,6 +16,10 @@ updates:
     commit-message:
       prefix: "MFD-5939: Bump versions\n\nfeature:"
     groups:
+      similar-requirements-first-first:
+        applies-to: version-updates
+        patterns: 
+          - "*~*"
       similar-requirements-first:
         applies-to: version-updates
         patterns: 
