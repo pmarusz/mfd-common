@@ -19,7 +19,7 @@ updates:
     groups:
       similar-requirements:
         applies-to: version-updates
-        patterns: ["s*"]       
+        patterns: ["p.*"]       
       break:
         applies-to: version-updates
         update-types:
