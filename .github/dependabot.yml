@@ -18,7 +18,7 @@ updates:
     groups:
       similar-requirements:
         applies-to: version-updates
-        patterns: ["*~="]
+        patterns: ["p*"]
         update-types:
         - "major"
       break:
