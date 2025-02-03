@@ -20,7 +20,6 @@ updates:
         applies-to: version-updates
         patterns: ["*~="]
       break:
-        patterns: ["**"]
         applies-to: version-updates
         update-types:
         - "major"
