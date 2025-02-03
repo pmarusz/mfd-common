@@ -19,7 +19,8 @@ updates:
       similar-requirements-first:
         applies-to: version-updates
         patterns: 
-          - "p*" 
+          - "m*" 
+          - "r*"
       break:
         applies-to: version-updates
         update-types:
