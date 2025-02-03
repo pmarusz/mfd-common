@@ -19,8 +19,8 @@ updates:
       similar-requirements-first:
         applies-to: version-updates
         patterns: 
-          - "m*" 
-          - "r*"
+          - "mfd-ftp" 
+          - "rpyc"
           - "sshtunnel"
       break:
         applies-to: version-updates
