@@ -20,7 +20,7 @@ updates:
       similar-requirements:
         applies-to: version-updates
         patterns: 
-          - ["*"]       
+          - "*"       
       break:
         applies-to: version-updates
         update-types:
