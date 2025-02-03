@@ -6,7 +6,6 @@ updates:
   - package-ecosystem: "pip" # See documentation for possible values
     insecure-external-code-execution: allow
     open-pull-requests-limit: 50
-    versioning-strategy: increase
     schedule:
       interval: "daily"
       time: "14:00"
