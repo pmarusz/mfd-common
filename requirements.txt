@@ -2,3 +2,4 @@ paramiko==3.4.0
 pywinrm~=0.4.3
 mfd-common-libs==0.5.0
 scp~=0.13.4
+mfd-stats >= 0.12.1, < 2
