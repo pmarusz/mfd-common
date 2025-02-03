@@ -19,16 +19,16 @@ updates:
       similar-requirements-first:
         applies-to: version-updates
         patterns: 
-          - "*~="             
+          - "p*" 
+      break:
+        applies-to: version-updates
+        update-types:
+        - "major"
       feature-fix:
         applies-to: version-updates
         update-types:
         - "minor"
-        - "patch"
-      similar-requirements-two:
-        applies-to: version-updates
-        patterns: 
-          - "*" 
+        - "patch" 
 
 registries:
   artifactory:
