@@ -17,7 +17,7 @@ updates:
       prefix: "MFD-5939: Bump versions\n\nfeature:"
     groups:
       break:
-        patterns: ["p*"]
+        patterns: ["**"]
         applies-to: version-updates
         update-types:
         - "major"
