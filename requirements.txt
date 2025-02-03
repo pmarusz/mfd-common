@@ -5,4 +5,4 @@ mfd-ftp~=1.0.0
 rpyc~=6.0.0
 sshtunnel~=0.4.1
 pandas==1.1.5
-mfd=connect==6.54.3
+mfd-connect==6.54.3
