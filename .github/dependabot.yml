@@ -19,7 +19,7 @@ updates:
       similar-requirements-first:
         applies-to: version-updates
         patterns: 
-          - "*"             
+          - "*~="             
       feature-fix:
         applies-to: version-updates
         update-types:
