@@ -16,19 +16,19 @@ updates:
     commit-message:
       prefix: "MFD-5939: Bump versions\n\nfeature:"
     groups:
-      similar-requirements:
+      similar-requirements-first:
         applies-to: version-updates
         patterns: 
-          - "*"       
-      break:
-        applies-to: version-updates
-        update-types:
-        - "major"
+          - "*"             
       feature-fix:
         applies-to: version-updates
         update-types:
         - "minor"
         - "patch"
+      similar-requirements-two:
+        applies-to: version-updates
+        patterns: 
+          - "*" 
 
 registries:
   artifactory:
