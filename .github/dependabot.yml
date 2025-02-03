@@ -19,6 +19,8 @@ updates:
       similar-requirements:
         applies-to: version-updates
         patterns: ["*~="]
+        update-types:
+        - "major"
       break:
         applies-to: version-updates
         update-types:
