@@ -19,7 +19,7 @@ updates:
       similar-requirements:
         applies-to: version-updates
         patterns:
-          - "*~=*"
+          - ".*~="
       break:
         patterns: ["**"]
         applies-to: version-updates
