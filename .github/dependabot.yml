@@ -18,9 +18,7 @@ updates:
     groups:
       similar-requirements:
         applies-to: version-updates
-        patterns: ["p*"]
-        update-types:
-        - "major"
+        patterns: ["p*"]       
       break:
         applies-to: version-updates
         update-types:
