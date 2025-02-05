@@ -1,0 +1,6 @@
+-r requirements.txt  # Ensure tests dependencies are automatically included
+
+pytest~=7.2.1
+pytest-mock ~= 3.5.1
+
+coverage ~= 7.3.0
