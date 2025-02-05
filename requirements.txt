@@ -1,3 +1,5 @@
+--extra-index-url https://ubit-artifactory-or.intel.com/artifactory/api/pypi/epg-sw-mfd-or-repos/simple
+
 pywinrm~=0.4.3
 
 pytest-mock ~= 3.5.1
