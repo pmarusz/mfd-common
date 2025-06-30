@@ -7,10 +7,9 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ["sandbox.prod.amr.dind"]
     outputs:
       version: ${{ steps.version.outputs.version }}
-      version-changed: ${{ steps.version.outputs.version-changed }}
     steps:
     - uses: actions/checkout@v4
       with:
@@ -20,7 +19,7 @@ jobs:
       with:
         repository: intel-innersource/libraries.python.mfd.mfd-utils
         path: mfd-utils
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.GH_TOKEN }}
 
     - name: Set up Python
       uses: actions/setup-python@v5
