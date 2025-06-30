@@ -29,13 +29,13 @@ jobs:
 
     - name: Version bumping
       run: |
+        export PYTHONPATH=$PYTHONPATH:$GITHUB_WORKSPACE/mfd-utils
+        echo $PYTHONPATH
         python -m venv bump_version
         source bump_version/bin/activate
         pip install python-semantic-release==7.34.6
         pip install urllib3==1.26.15
         cd src
-        export PYTHONPATH=$PYTHONPATH:$GITHUB_WORKSPACE/mfd-utils
-        echo $PYTHONPATH
         version_after_bump=$(semantic-release print-version | tail -n 1 | tr -d '\n')
         semantic-release version
         echo "Version after semantic-release bump is: ${version_after_bump}"
