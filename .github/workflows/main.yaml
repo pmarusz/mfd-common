@@ -61,6 +61,7 @@ jobs:
     - name: Push git tag after version bump
       if: success()  # Only run if previous steps succeeded
       run: |
+        cd src
         git push origin "v${version_after_bump}"
       env:
         version_after_bump: ${{ steps.VERSION_BUMP.outputs.version_after_bump }}
