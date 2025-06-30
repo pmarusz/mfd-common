@@ -35,7 +35,8 @@ jobs:
         pip install python-semantic-release==7.34.6
         pip install urllib3==1.26.15
         cd src
-        semantic-release print-version
+        ls -la
+        semantic-release print-version --version-toml pyproject.toml
         version_after_bump=$(semantic-release print-version | tail -n 1 | tr -d '\n')
         echo "Version after semantic-release bump is: ${version_after_bump}"
         semantic-release version
