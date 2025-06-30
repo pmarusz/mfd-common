@@ -7,6 +7,11 @@ on:
 
 jobs:
   build:
+    permissions:
+      id-token: write
+    environment:
+      name: pypi
+      url: https://pypi.org/p/mfd-testing
     runs-on: ["sandbox.prod.amr.dind"]
     env:
       GIT_AUTHOR_NAME: sys-ptipu
@@ -20,17 +25,11 @@ jobs:
         fetch-depth: 0
         path: src
 
-    - uses: actions/checkout@v4
-      with:
-        repository: intel-innersource/libraries.python.mfd.mfd-utils
-        path: mfd-utils
-        token: ${{ secrets.GH_TOKEN }}
-
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.10.11'
-        cache: 'pip' # caching pip dependencies
+        cache: 'pip'
 
     - name: Version bumping
       id: VERSION_BUMP
@@ -40,8 +39,6 @@ jobs:
         export PYTHONPATH=$PYTHONPATH:$GITHUB_WORKSPACE/mfd-utils
         pip install python-semantic-release==7.34.6
         pip install urllib3==1.26.15
-        #pip install -r src/requirements-dev.txt
-        #mfd-create-config-files --project-dir src
         cd src
         version_after_bump=$(semantic-release print-version | tail -n 1 | tr -d '\n')
         echo "Version after semantic-release bump is: ${version_after_bump}"
@@ -65,3 +62,6 @@ jobs:
         git push origin "${version_after_bump}"
       env:
         version_after_bump: ${{ steps.VERSION_BUMP.outputs.version_after_bump }}
+
+    - name: Publish package distributions to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
