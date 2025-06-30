@@ -13,8 +13,6 @@ jobs:
       GIT_AUTHOR_EMAIL: sys_ptipu@intel.com
       GIT_COMMITTER_NAME: sys-ptipu
       GIT_COMMITTER_EMAIL: sys_ptipu@intel.com
-    outputs:
-      version: ${{ steps.version.outputs.version }}
     steps:
     - uses: actions/checkout@v4
       with:
@@ -33,6 +31,7 @@ jobs:
         cache: 'pip' # caching pip dependencies
 
     - name: Version bumping
+      id: VERSION_BUMP
       run: |
         python -m venv bump_version
         source bump_version/bin/activate
@@ -47,7 +46,7 @@ jobs:
         version_after_bump=$(semantic-release print-version | tail -n 1 | tr -d '\n')
         echo "Version after semantic-release bump is: ${version_after_bump}"
         semantic-release version
-        echo "version=v${version_after_bump}" >> $GITHUB_OUTPUT
+        echo "version_after_bump=v${version_after_bump}" >> $GITHUB_OUTPUT
 
 
     - name: Create virtual environment for whl creation
@@ -58,3 +57,10 @@ jobs:
         cd src
         ../whl_creation/bin/python -m build --wheel --outdir ../whl_creation/dist
         ls -l ../whl_creation/dist
+
+    - name: Push git tag after version bump
+      if: success()  # Only run if previous steps succeeded
+      run: |
+        git push origin "v${version_after_bump}"
+      env:
+        version_after_bump: ${{ steps.VERSION_BUMP.outputs.version_after_bump }}
