@@ -13,7 +13,7 @@ dependencies = { file = ["requirements.txt"] }
 name = "mfd-testing"
 description = "Module with common libraries and methods used in Modular Framework Design (MFD) ..."
 requires-python = ">=3.10, <3.14"
-version = "1.9.0"
+version = "0.0.0"
 dynamic = ["readme", "dependencies"]
 
 [tool.setuptools.packages.find]
