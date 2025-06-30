@@ -35,7 +35,6 @@ jobs:
     - name: Version bumping
       id: VERSION_BUMP
       run: |
-        git log -10
         python -m venv bump_version
         source bump_version/bin/activate
         export PYTHONPATH=$PYTHONPATH:$GITHUB_WORKSPACE/mfd-utils
@@ -44,6 +43,7 @@ jobs:
         #pip install -r src/requirements-dev.txt
         #mfd-create-config-files --project-dir src
         cd src
+        git log -10
         cat pyproject.toml
         version_after_bump=$(semantic-release print-version | tail -n 1 | tr -d '\n')
         echo "Version after semantic-release bump is: ${version_after_bump}"
