@@ -1,0 +1,50 @@
+name: CI BUILD
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      version-changed: ${{ steps.version.outputs.version-changed }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        path: src
+
+    - uses: actions/checkout@v4
+      with:
+        repository: intel-innersource/libraries.python.mfd.mfd-utils
+        path: mfd-utils
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10.11'
+        cache: 'pip' # caching pip dependencies
+
+    - name: Version bumping
+      run: |
+        python -m venv bump_version
+        source bump_version/bin/activate
+        pip install python-semantic-release==7.34.6
+        pip install urllib3==1.26.15
+        version_after_bump=$(semantic-release print-version | tail -n 1 | tr -d '\n')
+        semantic-release version
+        echo "Version after semantic-release bump is: ${version_after_bump}"
+        echo "version=v${version_after_bump}" >> $GITHUB_OUTPUT
+
+
+    - name: Create virtual environment for whl creation
+      run: |
+        python -m venv whl_creation
+        source whl_creation/bin/activate
+        pip install build==1.2.2.post1
+        cd src
+        ../whl_creation/bin/python -m build --wheel --outdir ../whl_creation/dist
+        ls -l ../whl_creation/dist
