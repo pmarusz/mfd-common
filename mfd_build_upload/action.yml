@@ -29,6 +29,12 @@ runs:
         fetch-depth: 0
         path: src
 
+    - uses: actions/checkout@v4
+      with:
+        repository: intel-innersource/libraries.python.mfd.mfd-utils
+        path: mfd-utils
+        token: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
