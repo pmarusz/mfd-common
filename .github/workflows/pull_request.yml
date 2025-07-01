@@ -5,18 +5,13 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build_and_upload_whl:
+    runs-on: ["sandbox.prod.amr.dind"]
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python
-      uses: actions/setup-python@v5
+    - uses: intel-sandbox/libraries.python.mfd.mfd-testing/mfd_build_upload@main
       with:
-        python-version: '3.10.11'
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Run tests
-      run: |
-        if [ -f pytest.ini ] || [ -d tests ]; then pytest; fi
+        PYTHON_VERSION: '3.10.11'
+        RELEASE_BUILD: false
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        GIT_USER: 'sys_ptmfd'
+        GIT_EMAIL: 'sys_ptmfd@intel.com'

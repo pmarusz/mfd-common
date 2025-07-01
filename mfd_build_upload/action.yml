@@ -60,11 +60,12 @@ runs:
         cd src
         version_after_bump=$(semantic-release print-version | tail -n 1 | tr -d '\n')
         version_from_tag=$(git describe --tags --abbrev=0 | tr -d '\n' | sed 's/^v//')
+        echo "Version after semantic-release bump is: ${version_after_bump}"
+        echo "Version from tag: ${version_from_tag}"
         if [ "$version_after_bump" == "$version_from_tag" ]; then
           echo "Version would not change: version_after_bump=${version_after_bump}, version_from_tag=${version_from_tag}"
           exit 1
         fi
-        echo "Version after semantic-release bump is: ${version_after_bump}"
         semantic-release version
         cat pyproject.toml
         echo "version_after_bump=v${version_after_bump}" >> $GITHUB_OUTPUT
@@ -81,6 +82,9 @@ runs:
 
     - name: Publish package distributions to PyPI
       if: inputs.RELEASE_BUILD == 'true'
+      env:
+        REF: release/v1
+        REPO: pypa/gh-action-pypi-publis
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         packages-dir: whl_creation/dist
