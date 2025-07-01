@@ -29,13 +29,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: whl-file
-      - name: ls
-        run: |
-          ls -la
       - name: Publish package distributions to PyPI
         if: success()
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: '*.whl'
-          password: ${{ inputs.PYPI_TOKEN }}
+          password: ${{ secrets.PYPI_TOKEN }}
 
