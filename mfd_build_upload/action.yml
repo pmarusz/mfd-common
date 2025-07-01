@@ -54,6 +54,11 @@ runs:
         mfd-create-config-files --project-dir src
         cd src
         version_after_bump=$(semantic-release print-version | tail -n 1 | tr -d '\n')
+        version_from_tag=$(git describe --tags --abbrev=0 | tr -d '\n' | sed 's/^v//')
+        if [ "$version_after_bump" == "$version_from_tag" ]; then
+          echo "Version would not change: version_after_bump=${version_after_bump}, version_from_tag=${version_from_tag}"
+          exit 1
+        fi
         echo "Version after semantic-release bump is: ${version_after_bump}"
         semantic-release version
         cat pyproject.toml
@@ -71,9 +76,6 @@ runs:
 
     - name: Publish package distributions to PyPI
       if: inputs.RELEASE_BUILD == 'true'
-      env:
-        name: pypi
-        url: https://pypi.org/p/mfd-testing
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         packages-dir: whl_creation/dist

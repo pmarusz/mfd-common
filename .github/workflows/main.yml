@@ -7,9 +7,9 @@ on:
 
 jobs:
   build:
-    # environment:
-    #   name: pypi
-    #   url: https://pypi.org/p/mfd-testing
+    environment:
+      name: pypi
+      url: https://pypi.org/p/mfd-testing
     runs-on: ["sandbox.prod.amr.dind"]
     steps:
     - uses: intel-sandbox/libraries.python.mfd.mfd-testing/mfd_build_upload@main
