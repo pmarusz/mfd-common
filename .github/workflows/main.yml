@@ -33,6 +33,6 @@ jobs:
         if: success()
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          packages-dir: '*.whl'
+          packages-dir: '.'
           password: ${{ secrets.PYPI_TOKEN }}
 

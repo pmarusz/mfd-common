@@ -1,6 +1,9 @@
 name: 'CI Build Composite Action'
 description: 'Composite action for version bumping, building, tagging, and publishing a Python package.'
 inputs:
+  REPOSITORY_NAME:
+    description: 'Repository name'
+    required: false
   BRANCH_NAME:
     description: 'Branch name to checkout'
     required: true
@@ -99,7 +102,7 @@ runs:
         github-token: ${{ inputs.GITHUB_TOKEN }}
         script: |
           const prNumber = context.payload.pull_request.number;
-          const commentBody = "We don't publish DEVs .whl.\n To build .whl, run 'pip install git+https://${{ github.repository }}@${{ github.ref_name }}'";
+          const commentBody = "We don't publish DEVs .whl.\n To build .whl, run 'pip install git+https://${{ inputs.REPOSITORY_NAME }}@${{ inputs.BRANCH_NAME }}'";
           await github.rest.issues.createComment({
             owner: context.repo.owner,
             repo: context.repo.repo,
