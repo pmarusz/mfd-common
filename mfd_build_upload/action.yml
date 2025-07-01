@@ -83,8 +83,8 @@ runs:
     - name: Publish package distributions to PyPI
       if: inputs.RELEASE_BUILD == 'true'
       env:
-        REF: release/v1
-        REPO: pypa/gh-action-pypi-publis
+        ACTION_REF: release/v1
+        ACTION_REPO: pypa/gh-action-pypi-publis
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         packages-dir: whl_creation/dist
