@@ -90,6 +90,7 @@ runs:
 
     - name: Push git tag after version bump
       if: success() && inputs.RELEASE_BUILD == 'true'
+      shell: bash
       env:
         GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
         GIT_AUTHOR_NAME: ${{ inputs.GIT_USER }}
