@@ -28,6 +28,7 @@ runs:
         fetch-tags: true
         fetch-depth: 0
         path: src
+        ref: ${{ github.ref_name }}
 
     - uses: actions/checkout@v4
       with:

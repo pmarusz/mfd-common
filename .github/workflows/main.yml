@@ -6,7 +6,7 @@ on:
     - main
 
 jobs:
-  build:
+  build_and_upload_whl:
     environment:
       name: pypi
       url: https://pypi.org/p/mfd-testing

@@ -5,7 +5,7 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  build_and_upload_whl:
+  build_whl:
     runs-on: ["sandbox.prod.amr.dind"]
     steps:
     - uses: intel-sandbox/libraries.python.mfd.mfd-testing/mfd_build_upload@main
