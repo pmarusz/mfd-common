@@ -96,8 +96,7 @@ runs:
         GIT_AUTHOR_EMAIL: ${{ inputs.GIT_EMAIL }}
         GIT_COMMITTER_NAME: ${{ inputs.GIT_USER }}
         GIT_COMMITTER_EMAIL: ${{ inputs.GIT_EMAIL }}
+        version_after_bump: ${{ steps.VERSION_BUMP.outputs.version_after_bump }}
       run: |
         cd src
         git push origin "${version_after_bump}"
-      env:
-        version_after_bump: ${{ steps.VERSION_BUMP.outputs.version_after_bump }}
