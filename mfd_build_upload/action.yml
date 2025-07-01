@@ -1,6 +1,9 @@
 name: 'CI Build Composite Action'
 description: 'Composite action for version bumping, building, tagging, and publishing a Python package.'
 inputs:
+  BRANCH_NAME:
+    description: 'Branch name to checkout'
+    required: true
   PYTHON_VERSION:
     description: 'Python version to use'
     required: false
@@ -28,13 +31,13 @@ runs:
         fetch-tags: true
         fetch-depth: 0
         path: src
-        ref: ${{ github.ref_name }}
+        ref: ${{ inputs.BRANCH_NAME }}
 
     - uses: actions/checkout@v4
       with:
         repository: intel-innersource/libraries.python.mfd.mfd-utils
         path: mfd-utils
-        token: ${{ inputs.GITHUB_TOKEN }}
+        token: ${{ github.ref }}
 
     - name: Set up Python
       uses: actions/setup-python@v5
@@ -81,18 +84,16 @@ runs:
         ../whl_creation/bin/python -m build --wheel --outdir ../whl_creation/dist
         ls -l ../whl_creation/dist
 
-    - name: Publish package distributions to PyPI
+    - name: Upload whl package to artifacts
       if: inputs.RELEASE_BUILD == 'true'
-      env:
-        ACTION_REF: release/v1
-        ACTION_REPO: pypa/gh-action-pypi-publis
-      uses: pypa/gh-action-pypi-publish@release/v1
+      uses: actions/upload-artifact@v4
       with:
-        packages-dir: whl_creation/dist
-        password: ${{ inputs.PYPI_TOKEN }}
+        name: whl-file
+        path: whl_creation/dist/*.whl
 
 
     - name: Publish comment how to build .whl
+      if: inputs.RELEASE_BUILD == 'false'
       uses: actions/github-script@v6
       with:
         github-token: ${{ inputs.GITHUB_TOKEN }}
@@ -107,7 +108,7 @@ runs:
           });
 
     - name: Push git tag after version bump
-      if: success() && inputs.RELEASE_BUILD == 'true'
+      if: inputs.RELEASE_BUILD == 'true'
       shell: bash
       env:
         GIT_AUTHOR_NAME: ${{ inputs.GIT_USER }}

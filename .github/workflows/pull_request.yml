@@ -10,6 +10,7 @@ jobs:
     steps:
     - uses: intel-sandbox/libraries.python.mfd.mfd-testing/mfd_build_upload@main
       with:
+        BRANCH_NAME: ${{ github.head_ref }}
         PYTHON_VERSION: '3.10.11'
         RELEASE_BUILD: false
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
