@@ -77,7 +77,7 @@ runs:
     - name: Publish comment how to build .whl
       uses: actions/github-script@v6
       with:
-        github-token: ${{ input.GITHUB_TOKEN }}
+        github-token: ${{ inputs.GITHUB_TOKEN }}
         script: |
           const prNumber = context.payload.pull_request.number;
           const commentBody = "We don't publish DEVs .whl.\n To build .whl, run 'pip install git+https://${{ github.repository }}@${{ github.ref_name }}'";
