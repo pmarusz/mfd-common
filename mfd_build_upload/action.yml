@@ -1,0 +1,103 @@
+name: 'CI Build Composite Action'
+description: 'Composite action for version bumping, building, tagging, and publishing a Python package.'
+inputs:
+  PYTHON_VERSION:
+    description: 'Python version to use'
+    required: false
+    default: '3.10.11'
+  PYPI_TOKEN:
+    description: 'PyPI API token to publish package'
+    required: false
+  RELEASE_BUILD:
+    description: 'Is release build?'
+    default: false
+  GITHUB_TOKEN:
+    description: 'GitHub token for authentication'
+    required: false
+  GIT_USER:
+    description: 'Git user name for commit and tag'
+    required: false
+  GIT_EMAIL:
+    description: 'Git user email for commit and tag'
+    required: false
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-tags: true
+        fetch-depth: 0
+        path: src
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
+        cache: 'pip'
+
+    - name: Version bumping
+      id: VERSION_BUMP
+      shell: bash
+      run: |
+        python -m venv bump_version
+        source bump_version/bin/activate
+        export PYTHONPATH=$PYTHONPATH:$GITHUB_WORKSPACE/mfd-utils
+        pip install python-semantic-release==7.34.6
+        pip install urllib3==1.26.15
+        pip install -r src/requirements-dev.txt
+        mfd-create-config-files --project-dir src
+        cd src
+        version_after_bump=$(semantic-release print-version | tail -n 1 | tr -d '\n')
+        echo "Version after semantic-release bump is: ${version_after_bump}"
+        semantic-release version
+        cat pyproject.toml
+        echo "version_after_bump=v${version_after_bump}" >> $GITHUB_OUTPUT
+
+    - name: Create virtual environment for whl creation
+      shell: bash
+      run: |
+        python -m venv whl_creation
+        source whl_creation/bin/activate
+        pip install build==1.2.2.post1
+        cd src
+        ../whl_creation/bin/python -m build --wheel --outdir ../whl_creation/dist
+        ls -l ../whl_creation/dist
+
+    - name: Publish package distributions to PyPI
+      if: inputs.RELEASE_BUILD == 'true'
+      env:
+        name: pypi
+        url: https://pypi.org/p/mfd-testing
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        packages-dir: whl_creation/dist
+        password: ${{ inputs.PYPI_TOKEN }}
+
+
+    - name: Publish comment how to build .whl
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ input.GITHUB_TOKEN }}
+        script: |
+          const prNumber = context.payload.pull_request.number;
+          const commentBody = "We don't publish DEVs .whl.\n To build .whl, run 'pip install git+https://${{ github.repository }}@${{ github.ref_name }}'";
+          await github.rest.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: prNumber,
+            body: commentBody
+          });
+
+    - name: Push git tag after version bump
+      if: success() && inputs.RELEASE_BUILD == 'true'
+      env:
+        GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        GIT_AUTHOR_NAME: ${{ inputs.GIT_USER }}
+        GIT_AUTHOR_EMAIL: ${{ inputs.GIT_EMAIL }}
+        GIT_COMMITTER_NAME: ${{ inputs.GIT_USER }}
+        GIT_COMMITTER_EMAIL: ${{ inputs.GIT_EMAIL }}
+      run: |
+        cd src
+        git push origin "${version_after_bump}"
+      env:
+        version_after_bump: ${{ steps.VERSION_BUMP.outputs.version_after_bump }}

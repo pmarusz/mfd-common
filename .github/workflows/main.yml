@@ -1,70 +1,22 @@
 name: CI BUILD
 
 on:
-    push:
-        branches:
-            - main
+  push:
+    branches:
+    - main
 
 jobs:
   build:
-    permissions:
-      id-token: write
-      contents: write
-    environment:
-      name: pypi
-      url: https://pypi.org/p/mfd-testing
+    # environment:
+    #   name: pypi
+    #   url: https://pypi.org/p/mfd-testing
     runs-on: ["sandbox.prod.amr.dind"]
-    env:
-      GIT_AUTHOR_NAME: sys-ptipu
-      GIT_AUTHOR_EMAIL: sys_ptipu@intel.com
-      GIT_COMMITTER_NAME: sys-ptipu
-      GIT_COMMITTER_EMAIL: sys_ptipu@intel.com
     steps:
-    - uses: actions/checkout@v4
+    - uses: libraries.python.mfd.mfd-testing/mfd_build_upload@main
       with:
-        fetch-tags: true
-        fetch-depth: 0
-        path: src
-
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10.11'
-        cache: 'pip'
-
-    - name: Version bumping
-      id: VERSION_BUMP
-      run: |
-        python -m venv bump_version
-        source bump_version/bin/activate
-        export PYTHONPATH=$PYTHONPATH:$GITHUB_WORKSPACE/mfd-utils
-        pip install python-semantic-release==7.34.6
-        pip install urllib3==1.26.15
-        cd src
-        version_after_bump=$(semantic-release print-version | tail -n 1 | tr -d '\n')
-        echo "Version after semantic-release bump is: ${version_after_bump}"
-        semantic-release version
-        cat pyproject.toml
-        echo "version_after_bump=v${version_after_bump}" >> $GITHUB_OUTPUT
-
-    - name: Create virtual environment for whl creation
-      run: |
-        python -m venv whl_creation
-        source whl_creation/bin/activate
-        pip install build==1.2.2.post1
-        cd src
-        ../whl_creation/bin/python -m build --wheel --outdir ../whl_creation/dist
-        ls -l ../whl_creation/dist
-
-    - name: Push git tag after version bump
-      if: success()  # Only run if previous steps succeeded
-      run: |
-        cd src
-        git push origin "${version_after_bump}"
-      env:
-        version_after_bump: ${{ steps.VERSION_BUMP.outputs.version_after_bump }}
-
-    - name: Publish package distributions to PyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        packages-dir: whl_creation/dist
+        PYTHON_VERSION: '3.10.11'
+        RELEASE_BUILD: true
+        PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        GIT_USER: 'sys_ptmfd'
+        GIT_EMAIL: 'sys_ptmfd@intel.com'

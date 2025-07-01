@@ -19,9 +19,5 @@ dynamic = ["readme", "dependencies"]
 [tool.setuptools.packages.find]
 exclude = ["examples", "tests*", "sphinx-doc"]
 
-[tool.semantic_release]
-version_toml = "pyproject.toml:project.version"
-version_source = "tag"
-
 [project.urls]
 homepage = "https://intel.com/"
