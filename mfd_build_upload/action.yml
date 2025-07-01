@@ -21,11 +21,6 @@ inputs:
     description: 'Git user email for commit and tag'
     required: true
 runs:
-  env:
-    GIT_AUTHOR_NAME: ${{ inputs.GIT_USER }}
-    GIT_AUTHOR_EMAIL: ${{ inputs.GIT_EMAIL }}
-    GIT_COMMITTER_NAME: ${{ inputs.GIT_USER  }}
-    GIT_COMMITTER_EMAIL: ${{ inputs.GIT_EMAIL }}
   using: "composite"
   steps:
     - uses: actions/checkout@v4
@@ -48,6 +43,11 @@ runs:
 
     - name: Version bumping
       id: VERSION_BUMP
+      env:
+        GIT_AUTHOR_NAME: ${{ inputs.GIT_USER }}
+        GIT_AUTHOR_EMAIL: ${{ inputs.GIT_EMAIL }}
+        GIT_COMMITTER_NAME: ${{ inputs.GIT_USER  }}
+        GIT_COMMITTER_EMAIL: ${{ inputs.GIT_EMAIL }}
       shell: bash
       run: |
         python -m venv bump_version
@@ -105,6 +105,10 @@ runs:
       if: success() && inputs.RELEASE_BUILD == 'true'
       shell: bash
       env:
+        GIT_AUTHOR_NAME: ${{ inputs.GIT_USER }}
+        GIT_AUTHOR_EMAIL: ${{ inputs.GIT_EMAIL }}
+        GIT_COMMITTER_NAME: ${{ inputs.GIT_USER  }}
+        GIT_COMMITTER_EMAIL: ${{ inputs.GIT_EMAIL }}
         version_after_bump: ${{ steps.VERSION_BUMP.outputs.version_after_bump }}
       run: |
         cd src
