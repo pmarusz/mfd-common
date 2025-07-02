@@ -9,13 +9,20 @@ jobs:
   build_whl:
     strategy:
       matrix:
-        python-version: ['3.10', '3.13']
+        include:
+          - name: python-version-3-10
+            python_version: '3.10'
+            push_tag: true
+          - name: python-version-3-13
+            python_version: '3.13'
+            push_tag: false
     runs-on: ["sandbox.prod.amr.dind"]
     steps:
     - uses: intel-sandbox/libraries.python.mfd.mfd-testing/mfd_build_whl@main
       with:
         BRANCH_NAME: ${{ github.ref_name }}
-        PYTHON_VERSION: ${{ matrix.python-version }}
+        PYTHON_VERSION: ${{ matrix.python_version }}
+        PUSH_TAG: ${{ matrix.push_tag }}
         RELEASE_BUILD: true
         PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -31,7 +38,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: whl-file-${{ matrix.python-version }}
+          name: whl-file-${{ matrix.python_version }}
       - name: Publish package distributions to PyPI
         if: success()
         uses: pypa/gh-action-pypi-publish@release/v1

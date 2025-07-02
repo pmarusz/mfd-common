@@ -11,6 +11,10 @@ inputs:
     description: 'Python version to use'
     required: false
     default: '3.10.11'
+  PUSH_TAG:
+    description: 'Push tag after version bump'
+    required: false
+    default: false
   PYPI_TOKEN:
     description: 'PyPI API token to publish package'
     required: false
@@ -112,7 +116,7 @@ runs:
           });
 
     - name: Push git tag after version bump
-      if: inputs.RELEASE_BUILD == 'true'
+      if: inputs.RELEASE_BUILD == 'true' and inputs.PUSH_TAG == 'true'
       shell: bash
       env:
         GIT_AUTHOR_NAME: ${{ inputs.GIT_USER }}
