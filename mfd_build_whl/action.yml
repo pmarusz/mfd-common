@@ -92,7 +92,7 @@ runs:
       if: inputs.RELEASE_BUILD == 'true'
       uses: actions/upload-artifact@v4
       with:
-        name: whl-file
+        name: whl-file-${{ inputs.PYTHON_VERSION }}
         path: whl_creation/dist/*.whl
 
 

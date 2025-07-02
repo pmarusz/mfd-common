@@ -15,7 +15,7 @@ jobs:
     - uses: intel-sandbox/libraries.python.mfd.mfd-testing/mfd_build_upload@main
       with:
         BRANCH_NAME: ${{ github.ref_name }}
-        PYTHON_VERSION: '3.10.11'
+        PYTHON_VERSION: ${{ matrix.python-version }}
         RELEASE_BUILD: true
         PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -31,7 +31,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: whl-file
+          name: whl-file-${{ matrix.python-version }}
       - name: Publish package distributions to PyPI
         if: success()
         uses: pypa/gh-action-pypi-publish@release/v1
