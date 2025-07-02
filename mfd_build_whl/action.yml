@@ -116,7 +116,7 @@ runs:
           });
 
     - name: Push git tag after version bump
-      if: inputs.RELEASE_BUILD == 'true' and inputs.PUSH_TAG == 'true'
+      if: ${{ inputs.RELEASE_BUILD == 'true' && inputs.PUSH_TAG == 'true' }}
       shell: bash
       env:
         GIT_AUTHOR_NAME: ${{ inputs.GIT_USER }}
