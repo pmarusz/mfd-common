@@ -30,6 +30,13 @@ inputs:
   GIT_EMAIL:
     description: 'Git user email for commit and tag'
     required: true
+  PROJECT_NAME:
+    description: 'Project name for tests'
+    required: true
+  SOURCE_PATH:
+    description: 'Path to the source code directory'
+    required: false
+    default: 'src'
 runs:
   using: "composite"
   steps:
@@ -37,7 +44,7 @@ runs:
       with:
         fetch-tags: true
         fetch-depth: 5
-        path: src
+        path: ${{ inputs.SOURCE_PATH }}
         ref: ${{ inputs.BRANCH_NAME }}
 
     - uses: actions/checkout@v4
@@ -66,9 +73,9 @@ runs:
         export PYTHONPATH=$PYTHONPATH:$GITHUB_WORKSPACE/mfd-utils
         pip install python-semantic-release==7.34.6
         pip install urllib3==1.26.15
-        pip install -r src/requirements-dev.txt
-        mfd-create-config-files --project-dir src
-        cd src
+        pip install -r ${{ inputs.SOURCE_PATH }}/requirements-dev.txt
+        mfd-create-config-files --project-dir ${{ inputs.SOURCE_PATH }}
+        cd ${{ inputs.SOURCE_PATH }}
         version_after_bump=$(semantic-release print-version | tail -n 1 | tr -d '\n')
         version_from_tag=$(git describe --tags --abbrev=0 | tr -d '\n' | sed 's/^v//')
         echo "Version after semantic-release bump is: ${version_after_bump}"
@@ -88,9 +95,48 @@ runs:
         python -m venv whl_creation
         source whl_creation/bin/activate
         pip install build==1.2.2.post1
-        cd src
+        cd ${{ inputs.SOURCE_PATH }}
         ../whl_creation/bin/python -m build --wheel --outdir ../whl_creation/dist
         ls -l ../whl_creation/dist
+
+    - name: Determine if unit and functional tests should run
+      id: test_check
+      shell: bash
+      run: |
+        UNIT_TEST_DIR="${{ inputs.SOURCE_PATH }}/tests/unit/test_${PROJECT_NAME}"
+        FUNC_TEST_DIR="${{ inputs.SOURCE_PATH }}/tests/system/test_${PROJECT_NAME}"
+        if [ -d "$UNIT_TEST_DIR" ]; then
+          echo "run_unit_tests=true" >> $GITHUB_OUTPUT
+        else
+          echo "run_unit_tests=false" >> $GITHUB_OUTPUT
+        fi
+        if [ -d "$FUNC_TEST_DIR" ]; then
+          echo "run_functional_tests=true" >> $GITHUB_OUTPUT
+        else
+          echo "run_functional_tests=false" >> $GITHUB_OUTPUT
+        fi
+
+    - name: Install dependencies for tests
+      if: steps.test_check.outputs.run_unit_tests == 'true' || steps.test_check.outputs.run_functional_tests == 'true'
+      shell: bash
+      run: |
+        python -m venv test_env
+        source test_env/bin/activate
+        python -m pip install -r "${{ inputs.SOURCE_PATH }}/requirements.txt" -r "${{ inputs.SOURCE_PATH }}/requirements-test.txt" -r "${{ inputs.SOURCE_PATH }}/requirements-dev.txt"
+
+    - name: Run unit tests if test directory exists
+      if: steps.test_check.outputs.run_unit_tests == 'true'
+      shell: bash
+      run: |
+        source test_env/bin/activate
+        mfd-unit-tests --project-dir ${{ inputs.SOURCE_PATH }}
+
+    - name: Run functional tests if test directory exists
+      if: steps.test_check.outputs.run_functional_tests == 'true'
+      shell: bash
+      run: |
+        source test_env/bin/activate
+        mfd-system-tests --project-dir ${{ inputs.SOURCE_PATH }}
 
     - name: Upload whl package to artifacts
       if: inputs.RELEASE_BUILD == 'true'
@@ -125,5 +171,5 @@ runs:
         GIT_COMMITTER_EMAIL: ${{ inputs.GIT_EMAIL }}
         version_after_bump: ${{ steps.VERSION_BUMP.outputs.version_after_bump }}
       run: |
-        cd src
+        cd ${{ inputs.SOURCE_PATH }}
         git push origin "${version_after_bump}"
