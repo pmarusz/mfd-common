@@ -103,8 +103,8 @@ runs:
       id: test_check
       shell: bash
       run: |
-        UNIT_TEST_DIR="${{ inputs.SOURCE_PATH }}/tests/unit/test_${PROJECT_NAME}"
-        FUNC_TEST_DIR="${{ inputs.SOURCE_PATH }}/tests/system/test_${PROJECT_NAME}"
+        UNIT_TEST_DIR="${{ inputs.SOURCE_PATH }}/tests/unit/test_${{ inputs.PROJECT_NAME }}"
+        FUNC_TEST_DIR="${{ inputs.SOURCE_PATH }}/tests/system/test_${{ inputs.PROJECT_NAME }}"
         if [ -d "$UNIT_TEST_DIR" ]; then
           echo "Unit tests directory exists: $UNIT_TEST_DIR"
           echo "run_unit_tests=true" >> $GITHUB_OUTPUT
