@@ -28,7 +28,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         GIT_USER: 'sys_ptmfd'
         GIT_EMAIL: 'sys_ptmfd@intel.com'
-        PROJECT_NAME: 'mfd-testing'
+        PROJECT_NAME: 'mfd_testing'
   upload_whl:
     environment:
       name: pypi
