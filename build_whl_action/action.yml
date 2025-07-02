@@ -133,17 +133,14 @@ runs:
       shell: bash
       run: |
         source test_env/bin/activate
-        export PYTHONPATH=$PYTHONPATH:${{ inputs.SOURCE_PATH }}
-        ls -l src
-        mfd-unit-tests --project-dir ${{ inputs.SOURCE_PATH }}
+        mfd-unit-tests --project-dir ${{ github.workspace }}/${{ inputs.SOURCE_PATH }}
 
     - name: Run functional tests if test directory exists
       if: steps.test_check.outputs.run_functional_tests == 'true'
       shell: bash
       run: |
         source test_env/bin/activate
-        export PYTHONPATH=$PYTHONPATH:${{ inputs.SOURCE_PATH }}
-        mfd-system-tests --project-dir ${{ inputs.SOURCE_PATH }}
+        mfd-system-tests --project-dir ${{ github.workspace }}/${{ inputs.SOURCE_PATH }}
 
     - name: Upload whl package to artifacts
       if: inputs.RELEASE_BUILD == 'true'
