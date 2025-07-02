@@ -149,7 +149,6 @@ runs:
         name: whl-file-${{ inputs.PYTHON_VERSION }}
         path: whl_creation/dist/*.whl
 
-
     - name: Publish comment how to build .whl
       if: inputs.RELEASE_BUILD == 'false'
       uses: actions/github-script@v6
