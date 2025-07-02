@@ -5,16 +5,13 @@ on:
     branches:
     - main
 
-env:
-  DEFAULT_PYTHON_VERSION: '3.10'
-
 jobs:
   build_whl:
     strategy:
       matrix:
         include:
           - name: python-version-3-10
-            python_version: ${{ env.DEFAULT_PYTHON_VERSION }}
+            python_version: ${{ vars.DEFAULT_PYTHON_VERSION }}
             push_tag: true
           - name: python-version-3-13
             python_version: '3.13'
@@ -41,7 +38,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: whl-file-${{ env.DEFAULT_PYTHON_VERSION }}
+          name: whl-file-${{ vars.DEFAULT_PYTHON_VERSION }}
       - name: Publish package distributions to PyPI
         if: success()
         uses: pypa/gh-action-pypi-publish@release/v1
