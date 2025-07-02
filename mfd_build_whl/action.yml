@@ -134,6 +134,7 @@ runs:
       run: |
         source test_env/bin/activate
         export PYTHONPATH=$PYTHONPATH:${{ inputs.SOURCE_PATH }}
+        ls -l src
         mfd-unit-tests --project-dir ${{ inputs.SOURCE_PATH }}
 
     - name: Run functional tests if test directory exists
