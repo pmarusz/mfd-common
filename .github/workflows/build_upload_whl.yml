@@ -5,7 +5,6 @@ on:
       GH_TOKEN:
         description: 'GitHub token for authentication'
         required: true
-        type: string
       PYPI_TOKEN:
         description: 'PyPI API token to publish package'
         required: false
