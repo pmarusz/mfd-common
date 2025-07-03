@@ -16,6 +16,8 @@ jobs:
             python_version: '3.13'
             push_tag: false
     uses: ./.github/workflows/build_upload_whl.yml
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
     with:
       REPOSITORY_NAME: ${{ github.repository }}
       BRANCH_NAME: ${{ github.head_ref }}

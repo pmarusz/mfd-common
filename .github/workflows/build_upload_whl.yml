@@ -20,11 +20,19 @@ on:
         required: false
         default: false
         type: boolean
+      PYPI_TOKEN:
+        description: 'PyPI API token to publish package'
+        required: false
+        type: string
       RELEASE_BUILD:
         description: 'Is release build?'
         required: false
         default: false
         type: boolean
+      GITHUB_TOKEN:
+        description: 'GitHub token for authentication'
+        required: true
+        type: string
       GIT_USER:
         description: 'Git user name for commit and tag'
         required: true
@@ -63,7 +71,7 @@ jobs:
         with:
           repository: intel-innersource/libraries.python.mfd.mfd-utils
           path: mfd-utils
-          token: ${{ secrets.GH_TOKEN }}
+          token: ${{ inputs.GITHUB_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -166,7 +174,7 @@ jobs:
         if: inputs.RELEASE_BUILD == false
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GH_TOKEN }}
+          github-token: ${{ inputs.GITHUB_TOKEN }}
           script: |
             const prNumber = context.payload.pull_request.number;
             const commentBody = "We don't publish DEVs .whl.\n To build .whl, run 'pip install git+https://${{ inputs.REPOSITORY_NAME }}@${{ inputs.BRANCH_NAME }}'";
@@ -205,4 +213,4 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: '.'
-          password: ${{ secrets.PYPI_TOKEN }}
+          password: ${{ inputs.PYPI_TOKEN }}
