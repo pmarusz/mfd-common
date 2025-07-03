@@ -22,7 +22,6 @@ jobs:
       PYTHON_VERSION: ${{ matrix.python_version }}
       PUSH_TAG: ${{ matrix.push_tag }}
       RELEASE_BUILD: false
-      GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       GIT_USER: 'sys_ptmfd'
       GIT_EMAIL: 'sys_ptmfd@intel.com'
       PROJECT_NAME: 'mfd-testing'
