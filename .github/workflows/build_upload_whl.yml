@@ -63,7 +63,7 @@ jobs:
         with:
           repository: intel-innersource/libraries.python.mfd.mfd-utils
           path: mfd-utils
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -166,7 +166,7 @@ jobs:
         if: inputs.RELEASE_BUILD == false
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GH_TOKEN }}
           script: |
             const prNumber = context.payload.pull_request.number;
             const commentBody = "We don't publish DEVs .whl.\n To build .whl, run 'pip install git+https://${{ inputs.REPOSITORY_NAME }}@${{ inputs.BRANCH_NAME }}'";
