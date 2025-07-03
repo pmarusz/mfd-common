@@ -18,7 +18,7 @@ jobs:
             push_tag: false
     uses: ./.github/workflows/build_upload_whl.yml
     secrets:
-      GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
       PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
     with:
       REPOSITORY_NAME: ${{ github.repository }}
