@@ -96,7 +96,7 @@ jobs:
           pip install -r ${{ inputs.SOURCE_PATH }}/requirements-dev.txt
           #mfd-create-config-files --project-dir ${{ inputs.SOURCE_PATH }}
           cd ${{ inputs.SOURCE_PATH }}
-          version_after_bump=$(semantic-release print-version | tail -n 1 | tr -d '\n')
+          version_after_bump=$(semantic-release version --print | tail -n 1 | tr -d '\n')
           version_from_tag=$(git describe --tags --abbrev=0 | tr -d '\n' | sed 's/^v//')
           echo "Version after semantic-release bump is: ${version_after_bump}"
           echo "Version from tag: ${version_from_tag}"
