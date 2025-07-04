@@ -91,7 +91,7 @@ jobs:
           python -m venv bump_version
           source bump_version/bin/activate
           #export PYTHONPATH=$PYTHONPATH:$GITHUB_WORKSPACE/mfd-utils
-          pip install python-semantic-release
+          pip install python-semantic-release -vv
           pip install urllib3==1.26.15
           pip install -r ${{ inputs.SOURCE_PATH }}/requirements-dev.txt
           #mfd-create-config-files --project-dir ${{ inputs.SOURCE_PATH }}
