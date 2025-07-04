@@ -91,12 +91,12 @@ jobs:
           python -m venv bump_version
           source bump_version/bin/activate
           #export PYTHONPATH=$PYTHONPATH:$GITHUB_WORKSPACE/mfd-utils
-          pip install python-semantic-release -vv
+          pip install python-semantic-release
           pip install urllib3==1.26.15
           pip install -r ${{ inputs.SOURCE_PATH }}/requirements-dev.txt
           #mfd-create-config-files --project-dir ${{ inputs.SOURCE_PATH }}
           cd ${{ inputs.SOURCE_PATH }}
-          version_after_bump=$(semantic-release version --print | tail -n 1 | tr -d '\n')
+          version_after_bump=$(semantic-release version -vv --print | tail -n 1 | tr -d '\n')
           version_from_tag=$(git describe --tags --abbrev=0 | tr -d '\n' | sed 's/^v//')
           echo "Version after semantic-release bump is: ${version_after_bump}"
           echo "Version from tag: ${version_from_tag}"
@@ -105,7 +105,7 @@ jobs:
             exit 1
           fi
 
-          semantic-release version
+          semantic-release version -vv
           cat pyproject.toml
           echo "version_after_bump=v${version_after_bump}" >> $GITHUB_OUTPUT
 
