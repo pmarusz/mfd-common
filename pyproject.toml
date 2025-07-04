@@ -20,7 +20,7 @@ dynamic = ["readme", "dependencies"]
 exclude = ["examples", "tests*", "sphinx-doc"]
 
 [tool.semantic_release]
-version_toml = "2.5.5"
+version_toml = "pyproject.toml:project.version"
 version_source = "tag"
 
 [project.urls]
