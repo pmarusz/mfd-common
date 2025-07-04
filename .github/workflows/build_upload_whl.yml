@@ -94,7 +94,7 @@ jobs:
           pip install python-semantic-release==7.34.6
           pip install urllib3==1.26.15
           pip install -r ${{ inputs.SOURCE_PATH }}/requirements-dev.txt
-          mfd-create-config-files --project-dir ${{ inputs.SOURCE_PATH }}
+          #mfd-create-config-files --project-dir ${{ inputs.SOURCE_PATH }}
           cd ${{ inputs.SOURCE_PATH }}
           version_after_bump=$(semantic-release print-version | tail -n 1 | tr -d '\n')
           version_from_tag=$(git describe --tags --abbrev=0 | tr -d '\n' | sed 's/^v//')
