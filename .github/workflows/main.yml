@@ -13,9 +13,11 @@ jobs:
           - name: python-version-3-10
             python_version: '3.10'
             push_tag: true
+            continue-on-error: true
           - name: python-version-3-13
             python_version: '3.13'
             push_tag: false
+            continue-on-error: true
     uses: ./.github/workflows/build_upload_whl.yml
     secrets:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}

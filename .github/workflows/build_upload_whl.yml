@@ -9,6 +9,11 @@ on:
         description: 'PyPI API token to publish package'
         required: false
     inputs:
+      UPLOAD_PACKAGE:
+        description: 'Should the package be uploaded to PyPI?'
+        required: false
+        default: false
+        type: boolean
       REPOSITORY_NAME:
         description: 'Repository name'
         required: false
@@ -57,6 +62,9 @@ on:
 
 jobs:
   build_whl:
+    environment:
+      name: pypi
+      url: https://pypi.org/p/${{ inputs.PROJECT_NAME }}
     runs-on: ${{ inputs.RUNS_ON }}
     steps:
       - uses: actions/checkout@v4
@@ -159,13 +167,12 @@ jobs:
         run: |
           source test_env/bin/activate
           mfd-system-tests --project-dir ${{ github.workspace }}/${{ inputs.SOURCE_PATH }}
-
-      - name: Upload whl package to artifacts
-        if: inputs.RELEASE_BUILD == true
-        uses: actions/upload-artifact@v4
+      - name: Publish package distributions to PyPI
+        if: ${{ inputs.RELEASE_BUILD == true && inputs.UPLOAD_PACKAGE == true }}
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          name: whl-file-${{ inputs.PYTHON_VERSION }}
-          path: whl_creation/dist/*.whl
+          packages-dir: 'whl_creation/dist/*.whl'
+          password: ${{ secrets.PYPI_TOKEN }}
 
       - name: Publish comment how to build .whl
         if: inputs.RELEASE_BUILD == false
@@ -194,20 +201,3 @@ jobs:
         run: |
           cd ${{ inputs.SOURCE_PATH }}
           git push origin "${version_after_bump}"
-  upload_whl:
-    if: inputs.RELEASE_BUILD == true
-    environment:
-      name: pypi
-      url: https://pypi.org/p/${{ inputs.PROJECT_NAME }}
-    runs-on: ${{ inputs.RUNS_ON }}
-    needs: build_whl
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: whl-file-${{ vars.DEFAULT_PYTHON_VERSION }}
-      - name: Publish package distributions to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          packages-dir: '.'
-          password: ${{ secrets.PYPI_TOKEN }}
