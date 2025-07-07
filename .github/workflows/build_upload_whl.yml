@@ -62,7 +62,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-tags: true
-          fetch-depth: 5
+          fetch-depth: 0
           path: ${{ inputs.SOURCE_PATH }}
           ref: ${{ inputs.BRANCH_NAME }}
 
