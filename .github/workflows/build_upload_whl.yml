@@ -104,7 +104,6 @@ jobs:
             echo "Version would not change: version_after_bump=${version_after_bump}, version_from_tag=${version_from_tag}"
             exit 1
           fi
-
           semantic-release version --no-push --no-vcs-release
           cat pyproject.toml
           echo "version_after_bump=v${version_after_bump}" >> $GITHUB_OUTPUT
