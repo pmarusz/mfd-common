@@ -1,22 +1,21 @@
-name: CI BUILD
-
+name: CI BUILD - RELEASE MODE
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
-  build_whl:
+  build_upload_whl:
     strategy:
       matrix:
         include:
           - name: python-version-3-10
             python_version: '3.10'
             push_tag: false
+            upload_package: false
             continue-on-error: true
           - name: python-version-3-13
             python_version: '3.13'
-            push_tag: false
+            push_tag: true
+            upload_package: true
             continue-on-error: true
     uses: ./.github/workflows/build_upload_whl.yml
     secrets:
@@ -28,6 +27,7 @@ jobs:
       PYTHON_VERSION: ${{ matrix.python_version }}
       PUSH_TAG: ${{ matrix.push_tag }}
       RELEASE_BUILD: true
+      UPLOAD_PACKAGE: ${{ matrix.upload_package }}
       GIT_USER: 'sys_ptmfd'
       GIT_EMAIL: 'sys_ptmfd@intel.com'
       PROJECT_NAME: 'mfd-testing'

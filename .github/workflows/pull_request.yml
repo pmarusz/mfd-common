@@ -5,7 +5,7 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  build_upload_whl:
+  build_whl:
     strategy:
       matrix:
         include:
