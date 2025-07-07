@@ -115,7 +115,7 @@ jobs:
           semantic-release version --no-push --no-vcs-release
           cat pyproject.toml
           echo "version_after_bump=v${version_after_bump}" >> $GITHUB_OUTPUT
-      - name: Create virtual environment for whl creation
+      - name: Whl creation
         shell: bash
         run: |
           python -m venv whl_creation
@@ -171,7 +171,7 @@ jobs:
         if: ${{ inputs.RELEASE_BUILD == true && inputs.UPLOAD_PACKAGE == true }}
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          packages-dir: 'whl_creation/dist/*.whl'
+          packages-dir: 'whl_creation/dist'
           password: ${{ secrets.PYPI_TOKEN }}
 
       - name: Publish comment how to build .whl
