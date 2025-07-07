@@ -107,7 +107,6 @@ jobs:
           semantic-release version --no-push --no-vcs-release
           cat pyproject.toml
           echo "version_after_bump=v${version_after_bump}" >> $GITHUB_OUTPUT
-
       - name: Create virtual environment for whl creation
         shell: bash
         run: |
