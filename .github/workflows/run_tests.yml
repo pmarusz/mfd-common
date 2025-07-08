@@ -46,7 +46,11 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
         python_version: ['3.10', '3.13']
-      continue-on-error: true
+        include:
+          - python_version: '3.13'
+            continue-on-error: true
+          - python_version: '3.10'
+            continue-on-error: true
     runs-on: ${{ matrix.os }}
     steps:
     - name: Run UT
