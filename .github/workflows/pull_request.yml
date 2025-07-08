@@ -22,7 +22,7 @@ jobs:
       PYTHON_VERSION: ${{ matrix.python_version }}
       PUSH_TAG: ${{ matrix.push_tag }}
       RELEASE_BUILD: false
-      GIT_USER: 'pmarusze'
+      GIT_USER: 'pmarusz'
       GIT_EMAIL: 'piotr.maruszewski@intel.com'
       PROJECT_NAME: 'mfd-testing'
       RUNS_ON: "ubuntu-latest"

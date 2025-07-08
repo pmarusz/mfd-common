@@ -20,7 +20,7 @@ jobs:
       BRANCH_NAME: ${{ github.ref_name }}
       PYTHON_VERSION: ${{ matrix.python_version }}
       RELEASE_BUILD: true
-      GIT_USER: 'pmarusze'
+      GIT_USER: 'pmarusz'
       GIT_EMAIL: 'piotr.maruszewski@intel.com'
       PROJECT_NAME: 'mfd-testing'
       RUNS_ON: "ubuntu-latest"
