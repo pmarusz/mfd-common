@@ -44,7 +44,7 @@ jobs:
     needs: get_tests_to_run
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [sandbox.prod.amr.dind, windows-latest]
         python_version: ['3.10', '3.13']
         include:
           - python_version: '3.13'
@@ -53,6 +53,12 @@ jobs:
             continue-on-error: true
     runs-on: ${{ matrix.os }}
     steps:
+    - name: Get vars
+      run: |
+        echo "Run ut=${{ needs.jobs.get_tests_to_run.outputs.run_unit_tests }} "
+        echo "Run ft=${{ needs.jobs.get_tests_to_run.outputs.run_functional_tests }} "
+
+
     - name: Run UT
       if: ${{ needs.jobs.get_tests_to_run.outputs.run_unit_tests == 'true' }}
       uses: ./.github/tests_actions/linux_ut_tests.yml
