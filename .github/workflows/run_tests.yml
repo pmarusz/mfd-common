@@ -3,6 +3,9 @@ name: Run Tests (UT + FT)
 on:
   workflow_call:
     inputs:
+      PROJECT_NAME:
+        required: true
+        type: string
       PYTHON_VERSION:
         required: true
         type: string
@@ -14,9 +17,6 @@ on:
         required: false
         type: string
         default: "windows-latest"
-    secrets:
-      GH_TOKEN:
-        required: true
 
 jobs:
   run_tests:
@@ -32,6 +32,7 @@ jobs:
       id: tests_path_existance
       shell: bash
       run: |
+          ls -l
           UNIT_TEST_DIR="tests/unit/test_$(echo "${{ inputs.PROJECT_NAME }}" | tr '-' '_')"
           FUNC_TEST_DIR="tests/system/test_$(echo "${{ inputs.PROJECT_NAME }}" | tr '-' '_')"
 
