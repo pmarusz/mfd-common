@@ -1,0 +1,19 @@
+name: PR Conventional Commit Validation
+on:
+  workflow_call:
+    inputs:
+      RUNS_ON:
+        description: 'Runner type for the job'
+        required: false
+        default: 'ubuntu-latest'
+        type: string
+
+jobs:
+  validate-pr-title:
+    runs-on: ${{ inputs.RUNS_ON }}
+    steps:
+      - name: PR Conventional Commit Validation
+        uses: ytanikin/pr-conventional-commits@1.4.0
+        with:
+          task_types: '["feat","fix","docs","test","ci","refactor","perf","chore","revert"]'
+          add_label: 'false'

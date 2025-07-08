@@ -6,17 +6,31 @@ on:
       - main
 
 jobs:
+  check_commit:
+    uses: ./.github/workflows/check_commit.yml
+  run_tests:
+    strategy:
+      matrix:
+        include:
+          - name: python-version-3-10
+            python_version: '3.10'
+            continue-on-error: true
+          - name: python-version-3-13
+            python_version: '3.13'
+            continue-on-error: true
+    uses: ./.github/workflows/run_tests.yml
+    with:
+      PYTHON_VERSION: ${{ matrix.python_version }}
+      RUNS_ON: "sandbox.prod.amr.dind"
   build_whl:
     strategy:
       matrix:
         include:
           - name: python-version-3-10
             python_version: '3.10'
-            push_tag: false
             continue-on-error: true
           - name: python-version-3-13
             python_version: '3.13'
-            push_tag: false
             continue-on-error: true
     uses: ./.github/workflows/build_upload_whl.yml
     secrets:
@@ -26,7 +40,6 @@ jobs:
       REPOSITORY_NAME: ${{ github.repository }}
       BRANCH_NAME: ${{ github.ref_name }}
       PYTHON_VERSION: ${{ matrix.python_version }}
-      PUSH_TAG: ${{ matrix.push_tag }}
       RELEASE_BUILD: true
       GIT_USER: 'sys_ptmfd'
       GIT_EMAIL: 'sys_ptmfd@intel.com'

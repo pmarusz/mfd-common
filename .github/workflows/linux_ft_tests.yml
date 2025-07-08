@@ -1,0 +1,35 @@
+name: Linux Tests (UT + FT)
+
+on:
+  workflow_call:
+    inputs:
+      PYTHON_VERSION:
+        required: true
+        type: string
+      RUNS_ON:
+        required: false
+        type: string
+        default: "ubuntu-latest"
+
+jobs:
+  unit_tests:
+    runs-on: ${{ inputs.RUNS_ON }}
+    steps:
+    - name: Checkout main repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.PYTHON_VERSION }}
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements-test.txt ]; then pip install -r requirements-test.txt; fi
+        if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+        if [ -f /requirements.txt ]; then pip install -r requirements.txt; fi
+    - name: Run Funcional Tests
+      run: |
+        mfd-system-tests --project-dir
