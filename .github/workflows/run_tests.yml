@@ -54,12 +54,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - name: Run UT
-      if: jobs.get_tests_to_run.outputs.run_unit_tests == 'true'
+      if: ${{ needs.jobs.get_tests_to_run.outputs.run_unit_tests == 'true' }}
       uses: ./.github/tests_actions/linux_ut_tests.yml
       with:
         PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
     - name: Run FT
-      if: jobs.get_tests_to_run.outputs.run_functional_tests == 'true'
+      if: ${{ jobs.get_tests_to_run.outputs.run_functional_tests == 'true' }}
       uses: ./.github/tests_actions/linux_ft_tests.yml
       with:
         PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
