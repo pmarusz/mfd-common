@@ -1,22 +1,30 @@
 name: Run Tests (UT + FT)
 
+
 on:
-  workflow_call:
-    inputs:
-      PROJECT_NAME:
-        required: true
-        type: string
-      PYTHON_VERSION:
-        required: true
-        type: string
-      RUNS_ON:
-        required: false
-        type: string
-        default: "ubuntu-latest"
-      RUNS_ON_WINDOWS:
-        required: false
-        type: string
-        default: "windows-latest"
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches:
+      - main
+
+
+jobs:
+  run_tests:
+    strategy:
+      matrix:
+        include:
+          - name: python-version-3-10
+            python_version: '3.10'
+            continue-on-error: true
+          - name: python-version-3-13
+            python_version: '3.13'
+            continue-on-error: true
+    uses: ./.github/workflows/run_tests.yml
+    with:
+      PYTHON_VERSION: ${{ matrix.python_version }}
+      RUNS_ON: "sandbox.prod.amr.dind"
+      PROJECT_NAME: 'mfd-testing'
 
 jobs:
   get_tests_to_run:
@@ -50,40 +58,23 @@ jobs:
           echo "Functional tests directory does not exist: $FUNC_TEST_DIR"
           echo "run_functional_tests=false" >> $GITHUB_OUTPUT
           fi
-  run_linux_ut_tests:
+  run_tests_linux:
     needs: get_tests_to_run
     runs-on: ${{ inputs.RUNS_ON }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python_version: ['3.10', '3.13']
+      continue-on-error: true
+    runs-on: ${{ matrix.os }}
     steps:
-    - name: Run Linux UT
+    - name: Run UT
       if: jobs.get_tests_to_run.outputs.run_unit_tests == 'true'
       uses: ./.github/tests_actions/linux_ut_tests.yml
       with:
-        RUNS_ON: ${{ inputs.RUNS_ON }}
         PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
-
-  run_linux_ft_tests:
-    needs: get_tests_to_run
-    runs-on: ${{ inputs.RUNS_ON }}
-    steps:
-    - name: Run Linux FT
-      if: jobs.get_tests_to_run.outputs.run_functional_tests == 'true'
+    - Run FT:
+      if: jobs.get_tests_to_run.outputs.run_unit_tests == 'true'
       uses: ./.github/tests_actions/linux_ft_tests.yml
       with:
-        RUNS_ON: ${{ inputs.RUNS_ON }}
         PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
-
-#   run_windows_tests:
-#     runs-on: ${{ inputs.RUNS_ON_WINDOWS }}
-#     steps:
-#     - name: Run Windows UT
-#       if: steps.tests_path_existance.outputs.run_functional_tests == 'true'
-#       uses: ./.github/workflows/windows_ut_tests.yml
-#       with:
-#         RUNS_ON: ${{ inputs.RUNS_ON_WINDOWS }}
-#         PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
-#     - name: Run Windows FT
-#       if: steps.tests_path_existance.outputs.run_functional_tests == 'true'
-#       uses: ./.github/workflows/windows_ft_tests.yml
-#       wtih:
-#         RUNS_ON: ${{ inputs.RUNS_ON_WINDOWS }}
-#         PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
