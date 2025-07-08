@@ -54,7 +54,7 @@ jobs:
     steps:
     - uses: ./github/actions/prepare_test_env.yml
       with:
-        PYTHON_VERSION: ${{ metrix.python_version }}  
+        PYTHON_VERSION: ${{ matrix.python_version }}  
     - name: Run Functional Tests
       shell: bash
       run: |
@@ -73,7 +73,7 @@ jobs:
     steps:
     - uses: ./github/actions/prepare_test_env.yml
       with:
-        PYTHON_VERSION: ${{ metrix.python_version }}
+        PYTHON_VERSION: ${{ matrix.python_version }}
     - name: Run Unit Tests
       shell: bash
       run: |
