@@ -28,6 +28,7 @@ jobs:
       PROJECT_NAME: 'mfd-testing'
       RUNS_ON: "sandbox.prod.amr.dind"
   push_tag:
+    needs: build_whl
     uses: ./.github/workflows/push_tag.yml
     with:
       TAG_VERSION: ${{ github.ref_name }}

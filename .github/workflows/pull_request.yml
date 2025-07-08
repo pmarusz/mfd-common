@@ -23,6 +23,7 @@ jobs:
       RUNS_ON: "sandbox.prod.amr.dind"
       PROJECT_NAME: 'mfd-testing'
   build_whl:
+    needs: run_tests
     strategy:
       matrix:
         include:
