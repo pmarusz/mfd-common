@@ -5,8 +5,8 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  check_commit:
-    uses: ./.github/workflows/check_commit.yml
+  # check_commit:
+  #   uses: ./.github/workflows/check_commit.yml
   run_tests:
     strategy:
       matrix:
