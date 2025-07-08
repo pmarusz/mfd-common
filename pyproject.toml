@@ -5,19 +5,20 @@ requires = [
 ]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools.dynamic]
+
+dependencies = { file = ["requirements.txt"] }
+
 [project]
 name = "mfd-testing"
-description = "Module with common libraries and methods used in Modular Framework Design (MFD) ..."
+description = "Module for a code quality related scripts."
 requires-python = ">=3.10, <3.14"
-version = "2.10.2"
-readme = "README.md"
-
-[tool.setuptools.packages.find]
-exclude = ["examples", "tests*", "sphinx-doc"]
-
-[tool.semantic_release]
-version_toml = ["pyproject.toml:project.version"]
-version_source = "tag"
+version = "1.2.0"
+dynamic = ["dependencies"]
+license-files = ["LICENSE.md", "AUTHORS.md"]
+readme = {file = "README.md", content-type = "text/markdown"}
 
 [project.urls]
-homepage = "https://intel.com/"
+Homepage = "https://github.com/pmarusz/mfd-testing"
+[tool.setuptools.packages.find]
+exclude = ["examples", "tests*", "sphinx-doc"]

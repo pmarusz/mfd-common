@@ -21,6 +21,7 @@ jobs:
     with:
       PYTHON_VERSION: ${{ matrix.python_version }}
       RUNS_ON: "sandbox.prod.amr.dind"
+      PROJECT_NAME: 'mfd-testing'
   build_whl:
     strategy:
       matrix:
