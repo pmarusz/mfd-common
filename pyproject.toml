@@ -5,16 +5,12 @@ requires = [
 ]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools.dynamic]
-readme = {file = ["README.md"]}
-dependencies = { file = ["requirements.txt"] }
-
 [project]
 name = "mfd-testing"
 description = "Module with common libraries and methods used in Modular Framework Design (MFD) ..."
 requires-python = ">=3.10, <3.14"
 version = "2.10.2"
-dynamic = ["readme", "dependencies"]
+readme = "README.md"
 
 [tool.setuptools.packages.find]
 exclude = ["examples", "tests*", "sphinx-doc"]
