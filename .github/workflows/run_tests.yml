@@ -52,26 +52,9 @@ jobs:
         python_version: ['3.10', '3.13']
     runs-on: ${{ matrix.os }}
     steps:
-    - name: Checkout main repository
-      uses: actions/checkout@v4
-
-    - name: Set up Python
-      uses: actions/setup-python@v5
+    - uses: ./github/actions/prepare_test_env.yml
       with:
-        python-version: ${{ matrix.python_version }}
-        cache: 'pip'
-
-    - name: Install dependencies
-      shell: bash
-      run: |
-        if [ "${{ matrix.python_version }}" == "3.13" ]; then
-            exit 1
-        fi
-        python -m pip install --upgrade pip
-        pip install -r requirements-test.txt
-        pip install -r requirements-dev.txt
-        pip install -r requirements.txt
-
+        PYTHON_VERSION: ${{ metrix.python_version }}  
     - name: Run Functional Tests
       shell: bash
       run: |
@@ -88,23 +71,9 @@ jobs:
         python_version: ['3.10', '3.13']
     runs-on: ${{ matrix.os }}
     steps:
-    - name: Checkout main repository
-      uses: actions/checkout@v4
-
-    - name: Set up Python
-      uses: actions/setup-python@v5
+    - uses: ./github/actions/prepare_test_env.yml
       with:
-        python-version: ${{ matrix.python_version }}
-        cache: 'pip'
-
-    - name: Install dependencies
-      shell: bash
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements-test.txt
-        pip install -r requirements-dev.txt
-        pip install -r requirements.txt
-
+        PYTHON_VERSION: ${{ metrix.python_version }}
     - name: Run Unit Tests
       shell: bash
       run: |
