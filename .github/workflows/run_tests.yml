@@ -57,17 +57,17 @@ jobs:
     steps:
     - name: Get vars
       run: |
-        echo "Run ut=${{ needs.jobs.get_tests_to_run.outputs.run_unit_tests }} "
-        echo "Run ft=${{ needs.jobs.get_tests_to_run.outputs.run_functional_tests }} "
+        echo "Run ut=${{ needs.get_tests_to_run.outputs.run_unit_tests }} "
+        echo "Run ft=${{ needs.get_tests_to_run.outputs.run_functional_tests }} "
 
 
     - name: Run UT
-      if: ${{ needs.jobs.get_tests_to_run.outputs.run_unit_tests == 'true' }}
+      if: ${{ needs.get_tests_to_run.outputs.run_unit_tests == 'true' }}
       uses: ./.github/tests_actions/linux_ut_tests.yml
       with:
         PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
     - name: Run FT
-      if: ${{ needs.jobs.get_tests_to_run.outputs.run_functional_tests == 'true' }}
+      if: ${{ needs.get_tests_to_run.outputs.run_functional_tests == 'true' }}
       uses: ./.github/tests_actions/linux_ft_tests.yml
       with:
         PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
