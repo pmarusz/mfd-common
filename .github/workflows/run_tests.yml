@@ -19,7 +19,7 @@ on:
         default: "windows-latest"
 
 jobs:
-  run_tests:
+  get_tests_to_run:
     runs-on: ${{ inputs.RUNS_ON }}
     outputs:
       run_unit_tests: ${{ steps.tests_path_existance.outputs.run_unit_tests }}
@@ -52,6 +52,7 @@ jobs:
           echo "run_functional_tests=false" >> $GITHUB_OUTPUT
           fi
   run_linux_ut_tests:
+    needs: get_tests_to_run
     runs-on: ${{ inputs.RUNS_ON }}
     steps:
     - name: Run Linux UT
@@ -62,6 +63,7 @@ jobs:
         PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
 
   run_linux_ft_tests:
+    needs: get_tests_to_run
     runs-on: ${{ inputs.RUNS_ON }}
     steps:
     - name: Run Linux FT
