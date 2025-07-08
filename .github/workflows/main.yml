@@ -8,12 +8,11 @@ on:
 jobs:
   build_whl:
     strategy:
+      fail-fast: false
       matrix:
         include:
         - python_version: '3.10'
-          continue-on-error: true
         - python_version: '3.13'
-          continue-on-error: true
     uses: ./.github/workflows/build_upload_whl.yml
     secrets:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}

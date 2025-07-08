@@ -46,13 +46,10 @@ jobs:
     needs: get_tests_to_run
     if: ${{ needs.get_tests_to_run.outputs.run_functional_tests == 'true' }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
         python_version: ['3.10', '3.13']
-        include:
-          - python_version: '3.13'
-          - python_version: '3.10'
-    continue-on-error: true
     runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout main repository
@@ -61,7 +58,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: ${{ inputs.PYTHON_VERSION }}
+        python-version: ${{ matrix.python_version }}
         cache: 'pip'
 
     - name: Install dependencies
@@ -78,6 +75,7 @@ jobs:
         mfd-system-tests --project-dir .
 
   run_ut_tests_linux:
+    name: run_ut_tests_${{ matrix.os }}
     needs: get_tests_to_run
     if: ${{ needs.get_tests_to_run.outputs.run_unit_tests == 'true' }}
     strategy:
