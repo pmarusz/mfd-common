@@ -7,12 +7,9 @@ on:
 jobs:
   build_whl:
     strategy:
+      fail-fast: false
       matrix:
-        include:
-          - name: python-version-3-10
-            python_version: '3.10'
-          - name: python-version-3-13
-            python_version: '3.13'
+        python_version: ['3.10', '3.13']
     uses: ./.github/workflows/build_upload_whl.yml
     secrets:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -20,7 +17,6 @@ jobs:
       REPOSITORY_NAME: ${{ github.repository }}
       BRANCH_NAME: ${{ github.head_ref }}
       PYTHON_VERSION: ${{ matrix.python_version }}
-      PUSH_TAG: ${{ matrix.push_tag }}
       RELEASE_BUILD: false
       GIT_USER: 'pmarusz'
       GIT_EMAIL: 'piotr.maruszewski@intel.com'

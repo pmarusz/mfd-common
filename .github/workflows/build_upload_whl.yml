@@ -69,6 +69,7 @@ jobs:
           fetch-tags: true
           fetch-depth: 0
           path: ${{ inputs.SOURCE_PATH }}
+          ref: ${{ inputs.BRANCH_NAME }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
