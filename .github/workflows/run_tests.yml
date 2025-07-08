@@ -1,6 +1,5 @@
 name: Run Tests (UT + FT)
 
-
 on:
   pull_request:
     types: [opened, synchronize]
