@@ -54,8 +54,8 @@ jobs:
       uses: ./.github/tests_actions/linux_ut_tests.yml
       with:
         PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
-    - Run FT:
-      if: jobs.get_tests_to_run.outputs.run_unit_tests == 'true'
+    - name: Run FT
+      if: jobs.get_tests_to_run.outputs.run_functional_tests == 'true'
       uses: ./.github/tests_actions/linux_ft_tests.yml
       with:
         PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
