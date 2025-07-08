@@ -2,9 +2,6 @@ name: PR Conventional Commit Validation
 on:
   pull_request:
     types: [opened, synchronize]
-  push:
-    branches:
-      - main
 
 jobs:
   validate-pr-title:

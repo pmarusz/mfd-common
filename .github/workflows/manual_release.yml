@@ -1,4 +1,4 @@
-name: CI BUILD
+name: CI BUILD - RELEASE MODE
 
 on:
   workflow_dispatch:
