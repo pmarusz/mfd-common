@@ -41,7 +41,8 @@ jobs:
           echo "run_functional_tests=false" >> $GITHUB_OUTPUT
           fi
 
-  run_ft_tests_linux:
+  run_ft_tests:
+    name: run_ft_tests_${{ matrix.os }}
     needs: get_tests_to_run
     if: ${{ needs.get_tests_to_run.outputs.run_functional_tests == 'true' }}
     strategy:
@@ -50,9 +51,8 @@ jobs:
         python_version: ['3.10', '3.13']
         include:
           - python_version: '3.13'
-            continue-on-error: true
           - python_version: '3.10'
-            continue-on-error: true
+    continue-on-error: true
     runs-on: ${{ matrix.os }}
     steps:
     - name: Checkout main repository
@@ -68,9 +68,9 @@ jobs:
       shell: bash
       run: |
         python -m pip install --upgrade pip
-        if [ -f requirements-test.txt ]; then pip install -r requirements-test.txt; fi
-        if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
-        if [ -f /requirements.txt ]; then pip install -r requirements.txt; fi
+        pip install -r requirements-test.txt
+        pip install -r requirements-dev.txt
+        pip install -r requirements.txt
 
     - name: Run Functional Tests
       shell: bash
@@ -103,11 +103,11 @@ jobs:
       shell: bash
       run: |
         python -m pip install --upgrade pip
-        if [ -f requirements-test.txt ]; then pip install -r requirements-test.txt; fi
-        if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
-        if [ -f /requirements.txt ]; then pip install -r requirements.txt; fi
+        pip install -r requirements-test.txt
+        pip install -r requirements-dev.txt
+        pip install -r requirements.txt
 
     - name: Run Unit Tests
       shell: bash
       run: |
-        mfd-unit-tests --project-dir
+        mfd-unit-tests --project-dir .
