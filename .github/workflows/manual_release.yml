@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build_whl:
+  build_upload_whl:
     strategy:
       matrix:
         include:
@@ -23,17 +23,17 @@ jobs:
       BRANCH_NAME: ${{ github.ref_name }}
       PYTHON_VERSION: ${{ matrix.python_version }}
       RELEASE_BUILD: true
-      GIT_USER: 'sys_ptmfd'
-      GIT_EMAIL: 'sys_ptmfd@intel.com'
+      GIT_USER: 'pmarusze'
+      GIT_EMAIL: 'piotr.maruszewski@intel.com'
       PROJECT_NAME: 'mfd-testing'
-      RUNS_ON: "sandbox.prod.amr.dind"
+      RUNS_ON: "ubuntu-latest"
   push_tag:
     needs: build_whl
     uses: ./.github/workflows/push_tag.yml
     with:
-      TAG_VERSION: ${{ github.ref_name }}
-      RUNS_ON: "sandbox.prod.amr.dind"
-      GIT_USER: 'sys_ptmfd'
-      GIT_EMAIL: 'sys_ptmfd@intel.com'
+      TAG_VERSION: ${{ needs.build_upload_whl.outputs.version_after_bump }}
+      RUNS_ON: "ubuntu-latest"
+      GIT_USER: 'pmarusze'
+      GIT_EMAIL: 'piotr.maruszewski@intel.com'
     secrets:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}

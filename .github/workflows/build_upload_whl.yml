@@ -61,6 +61,8 @@ jobs:
       name: pypi
       url: https://pypi.org/p/${{ inputs.PROJECT_NAME }}
     runs-on: ${{ inputs.RUNS_ON }}
+    outputs:
+      version_after_bump: ${{ steps.VERSION_BUMP.outputs.version_after_bump }}
     steps:
       - uses: actions/checkout@v4
         with:

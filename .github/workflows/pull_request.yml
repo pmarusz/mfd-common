@@ -5,25 +5,7 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  # check_commit:
-  #   uses: ./.github/workflows/check_commit.yml
-  run_tests:
-    strategy:
-      matrix:
-        include:
-          - name: python-version-3-10
-            python_version: '3.10'
-            continue-on-error: true
-          - name: python-version-3-13
-            python_version: '3.13'
-            continue-on-error: true
-    uses: ./.github/workflows/run_tests.yml
-    with:
-      PYTHON_VERSION: ${{ matrix.python_version }}
-      RUNS_ON: "sandbox.prod.amr.dind"
-      PROJECT_NAME: 'mfd-testing'
   build_whl:
-    needs: run_tests
     strategy:
       matrix:
         include:
@@ -40,7 +22,7 @@ jobs:
       PYTHON_VERSION: ${{ matrix.python_version }}
       PUSH_TAG: ${{ matrix.push_tag }}
       RELEASE_BUILD: false
-      GIT_USER: 'sys_ptmfd'
-      GIT_EMAIL: 'sys_ptmfd@intel.com'
+      GIT_USER: 'pmarusze'
+      GIT_EMAIL: 'piotr.maruszewski@intel.com'
       PROJECT_NAME: 'mfd-testing'
-      RUNS_ON: "sandbox.prod.amr.dind"
+      RUNS_ON: "ubuntu-latest"

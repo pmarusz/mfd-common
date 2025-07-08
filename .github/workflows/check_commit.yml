@@ -1,17 +1,18 @@
 name: PR Conventional Commit Validation
 on:
-  workflow_call:
-    inputs:
-      RUNS_ON:
-        description: 'Runner type for the job'
-        required: false
-        default: 'ubuntu-latest'
-        type: string
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches:
+      - main
 
 jobs:
   validate-pr-title:
-    runs-on: ${{ inputs.RUNS_ON }}
+    runs-on: 'ubuntu-latest'
     steps:
+      - name: Checkout main repository
+        uses: actions/checkout@v4
+
       - name: PR Conventional Commit Validation
         uses: ytanikin/pr-conventional-commits@1.4.0
         with:

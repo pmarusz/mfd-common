@@ -10,7 +10,7 @@ on:
 
 jobs:
   get_tests_to_run:
-    runs-on: "sandbox.prod.amr.dind"
+    runs-on: "ubuntu-latest"
     outputs:
       run_unit_tests: ${{ steps.tests_path_existance.outputs.run_unit_tests }}
       run_functional_tests: ${{ steps.tests_path_existance.outputs.run_functional_tests }}
@@ -22,10 +22,8 @@ jobs:
       shell: bash
       run: |
           ls -la
-          #UNIT_TEST_DIR="tests/unit/test_$(echo "${{ github.event.repository.name }}" | tr '-' '_')"
-          UNIT_TEST_DIR="tests/unit/test_$(echo "mfd-testing" | tr '-' '_')"
-          #FUNC_TEST_DIR="tests/system/test_$(echo "${{ github.event.repository.name }}" | tr '-' '_')"
-          FUNC_TEST_DIR="tests/system/test_$(echo "mfd-testing" | tr '-' '_')"
+          UNIT_TEST_DIR="tests/unit/test_$(echo "${{ github.event.repository.name }}" | tr '-' '_')"
+          FUNC_TEST_DIR="tests/system/test_$(echo "${{ github.event.repository.name }}" | tr '-' '_')"
 
           if [ -d "$UNIT_TEST_DIR" ]; then
           echo "Unit tests directory exists: $UNIT_TEST_DIR"
@@ -42,11 +40,13 @@ jobs:
           echo "Functional tests directory does not exist: $FUNC_TEST_DIR"
           echo "run_functional_tests=false" >> $GITHUB_OUTPUT
           fi
-  run_tests_linux:
+
+  run_ft_tests_linux:
     needs: get_tests_to_run
+    if: ${{ needs.get_tests_to_run.outputs.run_functional_tests == 'true' }}
     strategy:
       matrix:
-        os: [sandbox.prod.amr.dind, windows-latest]
+        os: [ubuntu-latest, windows-latest]
         python_version: ['3.10', '3.13']
         include:
           - python_version: '3.13'
@@ -55,19 +55,60 @@ jobs:
             continue-on-error: true
     runs-on: ${{ matrix.os }}
     steps:
-    - name: Get vars
+    - name: Checkout main repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.PYTHON_VERSION }}
+        cache: 'pip'
+
+    - name: Install dependencies
+      shell: bash
       run: |
-        echo "Run ut=${{ needs.get_tests_to_run.outputs.run_unit_tests }} "
-        echo "Run ft=${{ needs.get_tests_to_run.outputs.run_functional_tests }} "
+        python -m pip install --upgrade pip
+        if [ -f requirements-test.txt ]; then pip install -r requirements-test.txt; fi
+        if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+        if [ -f /requirements.txt ]; then pip install -r requirements.txt; fi
 
+    - name: Run Functional Tests
+      shell: bash
+      run: |
+        mfd-system-tests --project-dir .
 
-    - name: Run UT
-      if: ${{ needs.get_tests_to_run.outputs.run_unit_tests == 'true' }}
-      uses: ./.github/tests_actions/linux_ut_tests.yml
+  run_ut_tests_linux:
+    needs: get_tests_to_run
+    if: ${{ needs.get_tests_to_run.outputs.run_unit_tests == 'true' }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python_version: ['3.10', '3.13']
+        include:
+          - python_version: '3.13'
+            continue-on-error: true
+          - python_version: '3.10'
+            continue-on-error: true
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Checkout main repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
       with:
-        PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
-    - name: Run FT
-      if: ${{ needs.get_tests_to_run.outputs.run_functional_tests == 'true' }}
-      uses: ./.github/tests_actions/linux_ft_tests.yml
-      with:
-        PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
+        python-version: ${{ inputs.PYTHON_VERSION }}
+        cache: 'pip'
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements-test.txt ]; then pip install -r requirements-test.txt; fi
+        if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+        if [ -f /requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: Run Unit Tests
+      shell: bash
+      run: |
+        mfd-unit-tests --project-dir
