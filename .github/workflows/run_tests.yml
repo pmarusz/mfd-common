@@ -64,7 +64,7 @@ jobs:
     - name: Install dependencies
       shell: bash
       run: |
-        if [ "${{ inputs.PYTHON_VERSION }}" == "3.13" ]; then
+        if [ "${{ matrix.python_version }}" == "3.13" ]; then
             exit 1
         fi
         python -m pip install --upgrade pip
