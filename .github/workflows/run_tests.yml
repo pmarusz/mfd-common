@@ -42,7 +42,6 @@ jobs:
           fi
   run_tests_linux:
     needs: get_tests_to_run
-    runs-on: ${{ inputs.RUNS_ON }}
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
