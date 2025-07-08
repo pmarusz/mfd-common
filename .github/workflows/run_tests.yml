@@ -10,7 +10,7 @@ on:
 
 jobs:
   get_tests_to_run:
-    runs-on: "ubuntu-latest"
+    runs-on: "sandbox.prod.amr.dind"
     outputs:
       run_unit_tests: ${{ steps.tests_path_existance.outputs.run_unit_tests }}
       run_functional_tests: ${{ steps.tests_path_existance.outputs.run_functional_tests }}
