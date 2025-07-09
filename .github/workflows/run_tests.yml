@@ -66,6 +66,7 @@ jobs:
       with:
         repository: pmarusz/mfd-common
         ref: main
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - uses: ./.github/prepare_test_env
       with:
