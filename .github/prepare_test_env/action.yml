@@ -13,13 +13,13 @@ runs:
   steps:
   - name: Checkout main repository
     uses: actions/checkout@v4
+    path: ${{ inputs.SOURCE_PATH }}
 
   - name: Set up Python
     uses: actions/setup-python@v5
     with:
       python-version: ${{ inputs.PYTHON_VERSION }}
       cache: 'pip'
-      path: ${{ inputs.SOURCE_PATH }}
 
   - name: Install dependencies
     shell: bash
