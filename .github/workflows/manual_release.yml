@@ -40,7 +40,7 @@ on:
         type: string
 
 concurrency:
-  group: ${{ inputs.REPOSITORY_NAME }}-${{ inputs.BRANCH_NAME }}
+  group: ${{ inputs.REPOSITORY_NAME }}-${{ inputs.BRANCH_NAME }}-${{ inputs.PYTHON_VERSION }}
   cancel-in-progress: false
 
 jobs:
