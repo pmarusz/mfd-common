@@ -57,6 +57,8 @@ jobs:
       RELEASE_STEPS: ${{ inputs.RELEASE_STEPS }}
       PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
   push_tag:
+    permissions:
+      contents: write
     needs: build_upload_whl
     if: ${{ inputs.RELEASE_STEPS }}
     uses: pmarusz/mfd-common/.github/workflows/push_tag.yml@main
