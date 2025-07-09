@@ -9,7 +9,7 @@ on:
         description: 'PyPI API token to publish package'
         required: false
     inputs:
-      UPLOAD_PACKAGE:
+      RELEASE_STEPS:
         description: 'Should the package be uploaded to PyPI?'
         required: false
         default: false
@@ -119,7 +119,7 @@ jobs:
           ls -l ../whl_creation/dist
 
       - name: Publish package distributions to PyPI
-        if: ${{ inputs.RELEASE_BUILD == true && inputs.UPLOAD_PACKAGE == true }}
+        if: ${{ inputs.RELEASE_BUILD == true && inputs.RELEASE_STEPS == true }}
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: 'whl_creation/dist'

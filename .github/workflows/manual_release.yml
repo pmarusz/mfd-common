@@ -11,7 +11,7 @@ on:
         description: 'PyPI API token to publish package'
         required: true
     inputs:
-      UPLOAD_PACKAGE:
+      RELEASE_STEPS:
         description: 'Should the package be uploaded to PyPI?'
         required: true
         default: true
@@ -54,10 +54,11 @@ jobs:
       BRANCH_NAME: ${{ inputs.BRANCH_NAME }}
       PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
       RELEASE_BUILD: true
-      UPLOAD_PACKAGE: ${{ inputs.UPLOAD_PACKAGE }}
+      RELEASE_STEPS: ${{ inputs.RELEASE_STEPS }}
       PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
   push_tag:
     needs: build_upload_whl
+    if: ${{ inputs.RELEASE_STEPS }}
     uses: pmarusz/mfd-common/.github/workflows/push_tag.yml@main
     with:
       TAG_VERSION: ${{ needs.build_upload_whl.outputs.version_after_bump }}
