@@ -21,6 +21,10 @@ on:
         required: false
         default: 'ubuntu-latest'
         type: string
+      SOURCE_PATH:
+        description: 'Path to the source code directory'
+        required: false
+        default: 'src'
 
 jobs:
   get_tests_to_run:
@@ -76,6 +80,7 @@ jobs:
     - name: Run Functional Tests
       shell: bash
       run: |
+        cd ${{ inputs.SOURCE_PATH }}
         mfd-system-tests --project-dir .
 
   run_ut_linux:
@@ -97,4 +102,5 @@ jobs:
     - name: Run Unit Tests
       shell: bash
       run: |
+        cd ${{ inputs.SOURCE_PATH }}
         mfd-unit-tests --project-dir .

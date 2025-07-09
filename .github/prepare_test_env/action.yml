@@ -3,6 +3,10 @@ inputs:
   PYTHON_VERSION:
     description: 'Python version to use'
     required: true
+  SOURCE_PATH:
+    description: 'Path to the source code directory'
+    required: false
+    default: 'src'
 runs:
   using: "composite"
   steps:
@@ -14,10 +18,12 @@ runs:
     with:
       python-version: ${{ inputs.PYTHON_VERSION }}
       cache: 'pip'
+      path: ${{ inputs.SOURCE_PATH }}
 
   - name: Install dependencies
     shell: bash
     run: |
+      cd ${{ inputs.SOURCE_PATH }}
       python -m pip install --upgrade pip
       pip install -r requirements-test.txt
       pip install -r requirements-dev.txt
