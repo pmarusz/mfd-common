@@ -34,12 +34,12 @@ on:
         type: boolean
       GIT_USER:
         description: 'Git user name for commit and tag'
-        required: true
+        required: false
         type: string
         default: 'pmarusz'
       GIT_EMAIL:
         description: 'Git user email for commit and tag'
-        required: true
+        required: false
         type: string
         default: 'piotr.maruszewski@intel.com'
       PROJECT_NAME:
