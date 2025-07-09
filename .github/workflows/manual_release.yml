@@ -11,6 +11,11 @@ on:
         description: 'PyPI API token to publish package'
         required: true
     inputs:
+      UPLOAD_PACKAGE:
+        description: 'Should the package be uploaded to PyPI?'
+        required: true
+        default: true
+        type: boolean
       REPOSITORY_NAME:
         description: 'Repository name'
         required: false
@@ -45,5 +50,5 @@ jobs:
       BRANCH_NAME: ${{ inputs.BRANCH_NAME }}
       PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
       RELEASE_BUILD: true
-      UPLOAD_PACKAGE: true
+      UPLOAD_PACKAGE: ${{ inputs.UPLOAD_PACKAGE }}
       PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
