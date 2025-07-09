@@ -48,7 +48,7 @@ jobs:
     secrets:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
     with:
-      REPOSITORY_NAME: ${{ input.REPOSITORY_NAME }}
+      REPOSITORY_NAME: ${{ inputs.REPOSITORY_NAME }}
       BRANCH_NAME: ${{ inputs.BRANCH_NAME }}
       PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
       RELEASE_BUILD: true
