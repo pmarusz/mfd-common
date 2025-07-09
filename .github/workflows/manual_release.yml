@@ -52,6 +52,3 @@ jobs:
     uses: ./.github/workflows/push_tag.yml
     with:
       TAG_VERSION: ${{ needs.build_upload_whl.outputs.version_after_bump }}
-    secrets:
-      GH_TOKEN: ${{ secrets.GH_TOKEN }}
-
