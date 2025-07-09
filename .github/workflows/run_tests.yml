@@ -68,8 +68,7 @@ jobs:
         ref: main
         token: ${{ secrets.GH_TOKEN }}
         path: common_actions
-
-    - uses: ./.github/prepare_test_env
+    - uses: ./common_actions/.github/prepare_test_env
       with:
         PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
     - name: Run Functional Tests
@@ -83,8 +82,13 @@ jobs:
     if: ${{ needs.get_tests_to_run.outputs.run_unit_tests == 'true' }}
     runs-on: ${{ inputs.RUNS_ON }}
     steps:
-    - name: Checkout main repository
+    - name: Checkout this repository
       uses: actions/checkout@v4
+      with:
+        repository: pmarusz/mfd-common
+        ref: main
+        token: ${{ secrets.GH_TOKEN }}
+        path: common_actions
     - uses: ./common_actions/.github/prepare_test_env
       with:
         PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
