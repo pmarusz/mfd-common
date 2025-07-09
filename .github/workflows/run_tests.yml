@@ -72,7 +72,6 @@ jobs:
         ref: main
         token: ${{ secrets.GH_TOKEN }}
         path: common_actions
-    - name: Show
     - uses: ./common_actions/.github/prepare_test_env
       with:
         PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
