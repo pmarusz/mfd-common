@@ -67,6 +67,7 @@ jobs:
         repository: pmarusz/mfd-common
         ref: main
         token: ${{ secrets.GH_TOKEN }}
+        path: common_actions
 
     - uses: ./.github/prepare_test_env
       with:
@@ -84,7 +85,7 @@ jobs:
     steps:
     - name: Checkout main repository
       uses: actions/checkout@v4
-    - uses: ./.github/prepare_test_env
+    - uses: ./common_actions/.github/prepare_test_env
       with:
         PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
     - name: Run Unit Tests
