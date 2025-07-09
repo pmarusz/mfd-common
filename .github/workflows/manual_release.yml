@@ -39,10 +39,6 @@ on:
         default: 'ubuntu-latest'
         type: string
 
-concurrency:
-  group: ${{ inputs.REPOSITORY_NAME }}-${{ inputs.BRANCH_NAME }}-${{ inputs.PYTHON_VERSION }}-${{ github.run_id }}
-  cancel-in-progress: false
-
 jobs:
   build_whl:
     uses: ./.github/workflows/build_upload_whl.yml
