@@ -40,7 +40,6 @@ jobs:
       id: tests_path_existance
       shell: bash
       run: |
-          ls -la
           UNIT_TEST_DIR="tests/unit/test_$(echo "${{ inputs.PROJECT_NAME }}" | tr '-' '_')"
           FUNC_TEST_DIR="tests/system/test_$(echo "${{ inputs.PROJECT_NAME }}" | tr '-' '_')"
 
@@ -74,7 +73,6 @@ jobs:
         token: ${{ secrets.GH_TOKEN }}
         path: common_actions
     - name: Show
-      run: ls -la common_actions
     - uses: ./common_actions/.github/prepare_test_env
       with:
         PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
