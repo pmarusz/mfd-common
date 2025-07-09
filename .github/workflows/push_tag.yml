@@ -6,6 +6,9 @@ on:
       TAG_VERSION:
         required: true
         type: string
+      TAG_SHA:
+        required: true
+        type: string
       RUNS_ON:
         required: false
         type: string
@@ -22,7 +25,7 @@ on:
         default: 'piotr.maruszewski@intel.com'
 
 jobs:
-  unit_tests:
+  push_tag:
     runs-on: ${{ inputs.RUNS_ON }}
     steps:
     - name: Checkout main repository
@@ -34,5 +37,5 @@ jobs:
         GIT_COMMITTER_NAME: ${{ inputs.GIT_USER  }}
         GIT_COMMITTER_EMAIL: ${{ inputs.GIT_EMAIL }}
       run: |
-        git tag ${{ inputs.TAG_VERSION }}
+        git tag ${{ inputs.TAG_VERSION }} ${{ inputs.TAG_SHA }}
         git push origin "${{ inputs.TAG_VERSION }}"
