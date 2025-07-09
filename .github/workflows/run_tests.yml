@@ -25,6 +25,7 @@ on:
         description: 'Path to the source code directory'
         required: false
         default: 'src'
+        type: string
 
 jobs:
   get_tests_to_run:
