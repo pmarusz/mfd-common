@@ -31,10 +31,9 @@ on:
         default: 'ubuntu-latest'
         type: string
 
-# It causes that not all of the parallel jobs for previous job are executed - Canceling since a higher priority waiting request for ...
-# concurrency:
-#   group: ${{ inputs.REPOSITORY_NAME }}-${{ inputs.BRANCH_NAME }}
-#   cancel-in-progress: false
+concurrency:
+  group: ${{ inputs.REPOSITORY_NAME }}-${{ inputs.BRANCH_NAME }}-${{ inputs.PYTHON_VERSION }}
+  cancel-in-progress: false
 
 jobs:
   build_whl:
