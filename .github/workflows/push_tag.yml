@@ -11,11 +11,15 @@ on:
         type: string
         default: "ubuntu-latest"
       GIT_USER:
+        description: 'Git user name for commit and tag'
         required: true
         type: string
+        default: 'pmarusz'
       GIT_EMAIL:
+        description: 'Git user email for commit and tag'
         required: true
         type: string
+        default: 'piotr.maruszewski@intel.com'
 
 jobs:
   unit_tests:

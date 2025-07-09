@@ -36,10 +36,12 @@ on:
         description: 'Git user name for commit and tag'
         required: true
         type: string
+        default: 'pmarusz'
       GIT_EMAIL:
         description: 'Git user email for commit and tag'
         required: true
         type: string
+        default: 'piotr.maruszewski@intel.com'
       PROJECT_NAME:
         description: 'Project name for tests'
         required: true

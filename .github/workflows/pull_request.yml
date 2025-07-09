@@ -20,16 +20,6 @@ on:
         required: false
         default: '3.10.11'
         type: string
-      GIT_USER:
-        description: 'Git user name for commit and tag'
-        required: true
-        type: string
-        default: 'pmarusz'
-      GIT_EMAIL:
-        description: 'Git user email for commit and tag'
-        required: true
-        type: string
-        default: 'piotr.maruszewski@intel.com'
       PROJECT_NAME:
         description: 'Project name for tests'
         required: true
@@ -51,6 +41,4 @@ jobs:
       BRANCH_NAME: ${{ inputs.BRANCH_NAME }}
       PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
       RELEASE_BUILD: false
-      GIT_USER: ${{ inputs.GIT_USER }}
-      GIT_EMAIL: ${{ inputs.GIT_EMAIL }}
       PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
