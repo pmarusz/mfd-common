@@ -11,9 +11,6 @@ on:
         description: 'PyPI API token to publish package'
         required: true
     inputs:
-      TAG_SHA:
-        required: true
-        type: string
       REPOSITORY_NAME:
         description: 'Repository name'
         required: false
@@ -50,9 +47,3 @@ jobs:
       RELEASE_BUILD: true
       UPLOAD_PACKAGE: true
       PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
-  push_tag:
-    needs: build_whl
-    uses: ./.github/workflows/push_tag.yml
-    with:
-      TAG_VERSION: ${{ needs.build_upload_whl.outputs.version_after_bump }}
-      TAG_SHA: ${{ inputs.TAG_SHA }}
