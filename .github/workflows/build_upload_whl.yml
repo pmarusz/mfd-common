@@ -56,10 +56,10 @@ on:
         required: false
         default: 'ubuntu-latest'
         type: string
-  outputs:
-    version_after_bump:
-      description: 'Version after bump'
-      value: ${{ jobs.build_whl.outputs.version_after_bump }}
+    outputs:
+      version_after_bump:
+        description: 'Version after bump'
+        value: ${{ jobs.build_whl.outputs.version_after_bump }}
 
 jobs:
   build_whl:
