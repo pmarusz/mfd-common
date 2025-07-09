@@ -38,9 +38,13 @@ on:
         required: false
         default: 'ubuntu-latest'
         type: string
+      TAG_SHA:
+        description: 'SHA of the commit to tag'
+        required: true
+        type: string
 
 jobs:
-  build_whl:
+  build_upload_whl:
     uses: ./.github/workflows/build_upload_whl.yml
     secrets:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -52,3 +56,9 @@ jobs:
       RELEASE_BUILD: true
       UPLOAD_PACKAGE: ${{ inputs.UPLOAD_PACKAGE }}
       PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
+  push_tag:
+    needs: build_upload_whl
+    uses: pmarusz/mfd-common/.github/workflows/push_tag.yml@main
+    with:
+      TAG_VERSION: ${{ needs.build_upload_whl.outputs.version_after_bump }}
+      TAG_SHA: ${{ inputs.TAG_SHA }}
