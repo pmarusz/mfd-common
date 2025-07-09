@@ -1,34 +1,71 @@
+
 name: CI BUILD - RELEASE MODE
 
 on:
-  workflow_dispatch:
+  workflow_call:
+    secrets:
+      GH_TOKEN:
+        description: 'GitHub token for authentication'
+        required: true
+      PYPI_TOKEN:
+        description: 'PyPI API token to publish package'
+        required: true
+    inputs:
+      REPOSITORY_NAME:
+        description: 'Repository name'
+        required: false
+        type: string
+      BRANCH_NAME:
+        description: 'Branch name to checkout'
+        required: true
+        type: string
+      PYTHON_VERSION:
+        description: 'Python version to use'
+        required: false
+        default: '3.10.11'
+        type: string
+      GIT_USER:
+        description: 'Git user name for commit and tag'
+        required: true
+        type: string
+        default: 'pmarusz'
+      GIT_EMAIL:
+        description: 'Git user email for commit and tag'
+        required: true
+        type: string
+        default: 'piotr.maruszewski@intel.com'
+      PROJECT_NAME:
+        description: 'Project name for tests'
+        required: true
+        type: string
+      RUNS_ON:
+        description: 'Runner type for the job'
+        required: false
+        default: 'ubuntu-latest'
+        type: string
 
 jobs:
-  build_upload_whl:
-    strategy:
-      fail-fast: false
-      matrix:
-        python_version: ['3.10', '3.13']
+  build_whl:
     uses: ./.github/workflows/build_upload_whl.yml
     secrets:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
       PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
     with:
-      REPOSITORY_NAME: ${{ github.repository }}
-      BRANCH_NAME: ${{ github.ref_name }}
-      PYTHON_VERSION: ${{ matrix.python_version }}
+      REPOSITORY_NAME: ${{ input.REPOSITORY_NAME }}
+      BRANCH_NAME: ${{ inputs.BRANCH_NAME }}
+      PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
       RELEASE_BUILD: true
-      GIT_USER: 'pmarusz'
-      GIT_EMAIL: 'piotr.maruszewski@intel.com'
-      PROJECT_NAME: 'mfd-testing'
-      RUNS_ON: "ubuntu-latest"
+      UPLOAD_PACKAGE: true
+      GIT_USER: ${{ inputs.GIT_USER }}
+      GIT_EMAIL: ${{ inputs.GIT_EMAIL }}
+      PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
   push_tag:
     needs: build_whl
     uses: ./.github/workflows/push_tag.yml
     with:
       TAG_VERSION: ${{ needs.build_upload_whl.outputs.version_after_bump }}
-      RUNS_ON: "ubuntu-latest"
-      GIT_USER: 'pmarusz'
-      GIT_EMAIL: 'piotr.maruszewski@intel.com'
+      GIT_USER: ${{ inputs.GIT_USER }}
+      GIT_EMAIL: ${{ inputs.GIT_EMAIL }}
     secrets:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
+

@@ -1,3 +1,0 @@
--r requirements-test.txt  # Ensure tests dependencies are automatically included
-
-mfd-code-quality
