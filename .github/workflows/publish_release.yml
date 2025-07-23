@@ -1,0 +1,50 @@
+name: Publish release
+
+on:
+  workflow_call:
+    secrets:
+      GH_TOKEN:
+        description: 'GitHub token for authentication'
+        required: true
+    inputs:
+      RUNS_ON:
+        required: false
+        type: string
+        default: "ubuntu-latest"
+      SOURCE_PATH:
+        description: 'Path to the source code directory'
+        required: false
+        default: 'src'
+        type: string
+      REPOSITORY_NAME:
+        description: 'Repository name'
+        required: false
+        type: string
+      BRANCH_NAME:
+        description: 'Branch name to checkout'
+        required: true
+        type: string
+
+jobs:
+  push_release:
+    runs-on: ${{ inputs.RUNS_ON }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-tags: true
+        fetch-depth: 0
+        path: ${{ inputs.SOURCE_PATH }}
+        ref: ${{ inputs.BRANCH_NAME }}
+        repository: ${{ inputs.REPOSITORY_NAME }}
+    - name: Push new release
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      run: |
+        python -m pip install --upgrade pip
+        python -m venv bump_version
+        source bump_version/bin/activate
+        pip install python-semantic-release
+        pip install -r ${{ inputs.SOURCE_PATH }}/requirements-dev.txt
+        mfd-create-config-files --project-dir ${{ inputs.SOURCE_PATH }}
+        cd ${{ inputs.SOURCE_PATH }}
+        semantic-release version --push --vcs-release

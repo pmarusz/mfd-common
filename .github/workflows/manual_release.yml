@@ -44,7 +44,7 @@ on:
         type: string
 
 jobs:
-  build_upload_whl:
+  publish_pypi:
     uses: ./.github/workflows/build_upload_whl.yml
     secrets:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -56,10 +56,13 @@ jobs:
       RELEASE_BUILD: true
       RELEASE_STEPS: ${{ inputs.RELEASE_STEPS }}
       PROJECT_NAME: ${{ inputs.PROJECT_NAME }}
-  push_tag:
-    needs: build_upload_whl
+      JOB_NAME: 'publish_pypi'
+  publish_release:
+    needs: publish_pypi
     if: ${{ inputs.RELEASE_STEPS }}
-    uses: pmarusz/mfd-common/.github/workflows/push_tag.yml@main
+    uses: pmarusz/mfd-common/.github/workflows/publish_release.yml@main
+    secrets:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
     with:
-      TAG_VERSION: ${{ needs.build_upload_whl.outputs.version_after_bump }}
-      TAG_SHA: ${{ inputs.TAG_SHA }}
+      REPOSITORY_NAME: ${{ inputs.REPOSITORY_NAME }}
+      BRANCH_NAME: ${{ inputs.BRANCH_NAME }}

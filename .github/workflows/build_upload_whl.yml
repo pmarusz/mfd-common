@@ -32,16 +32,6 @@ on:
         required: false
         default: false
         type: boolean
-      GIT_USER:
-        description: 'Git user name for commit and tag'
-        required: false
-        type: string
-        default: 'pmarusz'
-      GIT_EMAIL:
-        description: 'Git user email for commit and tag'
-        required: false
-        type: string
-        default: 'piotr.maruszewski@intel.com'
       PROJECT_NAME:
         description: 'Project name for tests'
         required: true
@@ -56,6 +46,11 @@ on:
         required: false
         default: 'ubuntu-latest'
         type: string
+      JOB_NAME:
+        description: 'Name of the job'
+        required: false
+        default: 'build_whl'
+        type: string
     outputs:
       version_after_bump:
         description: 'Version after bump'
@@ -63,12 +58,8 @@ on:
 
 jobs:
   build_whl:
-    environment:
-      name: pypi
-      url: https://pypi.org/p/${{ inputs.PROJECT_NAME }}
+    name: ${{ inputs.JOB_NAME }}
     runs-on: ${{ inputs.RUNS_ON }}
-    outputs:
-      version_after_bump: ${{ steps.VERSION_BUMP.outputs.version_after_bump }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -76,6 +67,7 @@ jobs:
           fetch-depth: 0
           path: ${{ inputs.SOURCE_PATH }}
           ref: ${{ inputs.BRANCH_NAME }}
+          repository: ${{ inputs.REPOSITORY_NAME }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -84,12 +76,6 @@ jobs:
           cache: 'pip'
 
       - name: Version bumping
-        id: VERSION_BUMP
-        env:
-          GIT_AUTHOR_NAME: ${{ inputs.GIT_USER }}
-          GIT_AUTHOR_EMAIL: ${{ inputs.GIT_EMAIL }}
-          GIT_COMMITTER_NAME: ${{ inputs.GIT_USER  }}
-          GIT_COMMITTER_EMAIL: ${{ inputs.GIT_EMAIL }}
         shell: bash
         run: |
           python -m pip install --upgrade pip
@@ -110,7 +96,6 @@ jobs:
             fi
           fi
           semantic-release version --no-push --no-vcs-release
-          cat pyproject.toml
           echo "version_after_bump=v${version_after_bump}" >> $GITHUB_OUTPUT
       - name: Whl creation
         shell: bash
@@ -121,6 +106,7 @@ jobs:
           cd ${{ inputs.SOURCE_PATH }}
           ../whl_creation/bin/python -m build --wheel --outdir ../whl_creation/dist
           ls -l ../whl_creation/dist
+          rm -rf *.egg-info
 
       - name: Check if .whl is installable
         shell: bash
