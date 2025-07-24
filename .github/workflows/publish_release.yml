@@ -24,6 +24,16 @@ on:
         description: 'Branch name to checkout'
         required: true
         type: string
+      GIT_EMAIL:
+        description: 'Git user email'
+        required: false
+        default: 'mfd-intel-bot@intel.com'
+        type: string
+      GIT_USER:
+        description: 'Git user name'
+        required: false
+        default: 'mfd-intel-bot'
+        type: string
 
 jobs:
   push_release:
@@ -39,12 +49,16 @@ jobs:
     - name: Push new release
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        GIT_AUTHOR_NAME: ${{ inputs.GIT_USER }}
+        GIT_AUTHOR_EMAIL: ${{ inputs.GIT_EMAIL }}
+        GIT_COMMITTER_NAME: ${{ inputs.GIT_USER }}
+        GIT_COMMITTER_EMAIL: ${{ inputs.GIT_EMAIL }}
       run: |
         python -m pip install --upgrade pip
         python -m venv bump_version
         source bump_version/bin/activate
         pip install python-semantic-release
         pip install -r ${{ inputs.SOURCE_PATH }}/requirements-dev.txt
-        mfd-create-config-files --project-dir ${{ inputs.SOURCE_PATH }}
+        #mfd-create-config-files --project-dir ${{ inputs.SOURCE_PATH }}
         cd ${{ inputs.SOURCE_PATH }}
-        semantic-release version --push --vcs-release
+        semantic-release -vv version --push --vcs-release
