@@ -49,10 +49,6 @@ jobs:
     - name: Push new release
       env:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        GIT_AUTHOR_NAME: ${{ inputs.GIT_USER }}
-        GIT_AUTHOR_EMAIL: ${{ inputs.GIT_EMAIL }}
-        GIT_COMMITTER_NAME: ${{ inputs.GIT_USER }}
-        GIT_COMMITTER_EMAIL: ${{ inputs.GIT_EMAIL }}
       run: |
         python -m pip install --upgrade pip
         python -m venv bump_version
