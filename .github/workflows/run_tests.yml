@@ -104,6 +104,7 @@ jobs:
       shell: bash
       run: |
         cd ${{ inputs.SOURCE_PATH }}
+        export PYTHONPATH=${{ github.workspace }}/${{ inputs.SOURCE_PATH }}
         mfd-unit-tests-with-coverage --project-dir .
 
     - name: Coveralls GitHub Action

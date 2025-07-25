@@ -38,10 +38,6 @@ on:
         required: false
         default: 'ubuntu-latest'
         type: string
-      TAG_SHA:
-        description: 'SHA of the commit to tag'
-        required: true
-        type: string
 
 jobs:
   publish_pypi:
