@@ -21,15 +21,24 @@ on:
         required: false
         default: 'ubuntu-latest'
         type: string
+      REPOSITORY_NAME:
+        description: 'Repository name'
+        required: false
+        type: string
+      BRANCH_NAME:
+        description: 'Branch name to checkout'
+        required: true
+        type: string
+      VIRTUALENV_PATH:
+        description: 'Virtualenv path'
+        required: false
+        default: 'virtualenv'
+        type: string
 
 jobs:
   run_check_standard:
     runs-on: ${{ inputs.RUNS_ON }}
     steps:
-      - name: Checkout this repository
-        uses: actions/checkout@v4
-        with:
-          path: ${{ inputs.SOURCE_PATH }}
       - name: Checkout mfd-common repository
         uses: actions/checkout@v4
         with:
@@ -40,7 +49,10 @@ jobs:
       - uses: ./common_actions/.github/prepare_test_env
         with:
           PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
+          BRANCH_NAME: ${{ inputs.BRANCH_NAME }}
+          REPOSITORY_NAME: ${{ inputs.REPOSITORY_NAME }}
       - name: Run mfd-code-standard
         shell: bash
         run: |
+          source ${{ github.workspace }}/${{ inputs.VIRTUALENV_PATH }}/*/activate
           mfd-code-standard --project-dir ${{ github.workspace }}/${{ inputs.SOURCE_PATH }}

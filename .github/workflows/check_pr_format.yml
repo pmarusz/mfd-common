@@ -16,6 +16,9 @@ jobs:
     steps:
       - name: Checkout main repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.BRANCH_NAME }}
+          repository: ${{ inputs.REPOSITORY_NAME }}
 
       - name: PR Conventional Title Validation
         uses: ytanikin/pr-conventional-commits@1.4.0

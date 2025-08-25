@@ -1,4 +1,4 @@
-name: Run Tests (UT + FT)
+name: Run Tests (ut + ft)
 
 on:
   workflow_call:
@@ -26,13 +26,31 @@ on:
         required: false
         default: 'src'
         type: string
+      REPOSITORY_NAME:
+        description: 'Repository name'
+        required: false
+        type: string
+      TARGET_BRANCH:
+        description: 'Target branch name'
+        required: false
+        default: 'main'
+        type: string
+      BRANCH_NAME:
+        description: 'Branch name to checkout'
+        required: true
+        type: string
+      VIRTUALENV_PATH:
+        description: 'Virtualenv path'
+        required: false
+        default: 'virtualenv'
+        type: string
 
 jobs:
   get_tests_to_run:
     runs-on: "ubuntu-latest"
     outputs:
-      run_unit_tests: ${{ steps.tests_path_existance.outputs.run_unit_tests }}
-      run_functional_tests: ${{ steps.tests_path_existance.outputs.run_functional_tests }}
+      run_unit_tests: ${{ steps.tests_path_existence.outputs.run_unit_tests }}
+      run_functional_tests: ${{ steps.tests_path_existence.outputs.run_functional_tests }}
     steps:
     - name: Checkout this repository
       uses: actions/checkout@v4
@@ -40,7 +58,7 @@ jobs:
         path: ${{ inputs.SOURCE_PATH }}
 
     - name: Determine if unit and functional tests should run
-      id: tests_path_existance
+      id: tests_path_existence
       shell: bash
       run: |
           UNIT_TEST_DIR="${{ inputs.SOURCE_PATH }}/tests/unit/test_$(echo "${{ inputs.PROJECT_NAME }}" | tr '-' '_')"
@@ -78,10 +96,13 @@ jobs:
     - uses: ./common_actions/.github/prepare_test_env
       with:
         PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
+        BRANCH_NAME: ${{ inputs.BRANCH_NAME }}
+        REPOSITORY_NAME: ${{ inputs.REPOSITORY_NAME }}
     - name: Run Functional Tests
       shell: bash
       run: |
-        cd ${{ inputs.SOURCE_PATH }}
+        source ${{ inputs.VIRTUALENV_PATH }}/*/activate
+        pushd ${{ inputs.SOURCE_PATH }}
         mfd-system-tests --project-dir .
 
   run_ut_tests:
@@ -100,11 +121,17 @@ jobs:
     - uses: ./common_actions/.github/prepare_test_env
       with:
         PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
+        BRANCH_NAME: ${{ inputs.BRANCH_NAME }}
+        REPOSITORY_NAME: ${{ inputs.REPOSITORY_NAME }}
     - name: Run Unit Tests
       shell: bash
       run: |
-        cd ${{ inputs.SOURCE_PATH }}
-        export PYTHONPATH=${{ github.workspace }}/${{ inputs.SOURCE_PATH }}
+        pushd ${{ inputs.SOURCE_PATH }}
+        git fetch && git checkout ${{ inputs.TARGET_BRANCH }} && git checkout ${{ inputs.BRANCH_NAME }}
+        popd
+        source ${{ inputs.VIRTUALENV_PATH }}/*/activate
+        python --version
+        pushd ${{ inputs.SOURCE_PATH }}
         mfd-unit-tests-with-coverage --project-dir .
 
     - name: Coveralls GitHub Action

@@ -1,5 +1,5 @@
 
-name: CI BUILD - RELEASE MODE
+name: CI Build - Release Mode
 
 on:
   workflow_call:
