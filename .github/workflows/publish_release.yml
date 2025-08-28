@@ -59,17 +59,14 @@ jobs:
         echo "Previous version: $PREV_VERSION"
         echo "Version after bump: $NEW_VERSION"
     - name: Clean pyproject.toml changes
-      run: git restore --staged pyproject.toml
+      run: mfd-delete-config-files --project-dir .
     - name: Update version in pyproject.toml
       run: |
         sed "s/$PREV_VERSION/$NEW_VERSION/" -i pyproject.toml
-    - name: Commit and push changes
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+    - name: Commit and push changes  
       run: |
         git config --local user.email "mfd_intel_bot@intel.com"
         git config --local user.name "mfd-intel-bot"
         git add pyproject.toml CHANGELOG.md
-        git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ inputs.REPOSITORY_NAME }}.git
         git commit -s -m "chore: Release v$NEW_VERSION"
         git push origin ${{ inputs.BRANCH_NAME }}
