@@ -40,15 +40,14 @@ jobs:
       run: |
         pip install -r requirements-dev.txt
         mfd-create-config-files --project-dir .
-        mfd pyproject.toml ../pyproject.toml
     - name: Run python-semantic-release
       id: semantic_release
       uses: python-semantic-release/python-semantic-release@v10.2.0
       with:
-        config_file: ../pyproject.toml
         build: false
         vcs_release: true
         push: true
+        commit: false
         github_token: ${{ secrets.GH_TOKEN }}
         strict: true
         verbosity: 2      
@@ -70,5 +69,5 @@ jobs:
       run: |
         git config --local user.email "mfd_intel_bot@intel.com"
         git config --local user.name "mfd-intel-bot"
-        git add pyproject.toml
+        git add pyproject.toml CHANGELOG.md
         git commit -s -m "chore: Release v$NEW_VERSION"
