@@ -71,3 +71,4 @@ jobs:
         git config --local user.name "mfd-intel-bot"
         git add pyproject.toml CHANGELOG.md
         git commit -s -m "chore: Release v$NEW_VERSION"
+        git push origin ${{ inputs.BRANCH_NAME }}
