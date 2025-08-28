@@ -59,7 +59,7 @@ jobs:
         echo "Previous version: $PREV_VERSION"
         echo "Version after bump: $NEW_VERSION"
     - name: Clean pyproject.toml changes
-      run: git status && git checkout -- pyproject.toml && git status
+      run: git restore --staged pyproject.toml
     - name: Update version in pyproject.toml
       run: |
         sed "s/$PREV_VERSION/$NEW_VERSION/" -i pyproject.toml
