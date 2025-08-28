@@ -42,7 +42,7 @@ jobs:
         mfd-create-config-files --project-dir .
     - name: Run python-semantic-release
       id: semantic_release
-      uses: python-semantic-release/python-semantic-release@v10.2.0
+      uses: python-semantic-release/python-semantic-release@v10.3.1
       with:
         build: false
         vcs_release: true
@@ -69,4 +69,7 @@ jobs:
         git config --local user.name "mfd-intel-bot"
         git add pyproject.toml CHANGELOG.md
         git commit -s -m "chore: Release v$NEW_VERSION"
+        git tag -f v$NEW_VERSION
         git push origin ${{ inputs.BRANCH_NAME }}
+        git push origin v$NEW_VERSION --force
+        
