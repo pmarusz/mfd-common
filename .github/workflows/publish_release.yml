@@ -50,6 +50,9 @@ jobs:
         github_token: ${{ secrets.GH_TOKEN }}
         strict: true
         verbosity: 2
+      outputs:
+        previous_version: ${{ steps.semantic_release.outputs.previous_version }}
+        version: ${{ steps.semantic_release.outputs.version }}
     - name: Get old/new versions from semantic-release
       run: |
         echo "Semantic Release Output:"
