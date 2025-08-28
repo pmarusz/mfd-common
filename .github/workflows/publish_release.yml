@@ -49,14 +49,12 @@ jobs:
         push: false
         github_token: ${{ secrets.GH_TOKEN }}
         strict: true
-        verbosity: 2
-      outputs:
-        previous_version: ${{ steps.semantic_release.outputs.previous_version }}
-        version: ${{ steps.semantic_release.outputs.version }}
+        verbosity: 2      
     - name: Get old/new versions from semantic-release
       run: |
         echo "Semantic Release Output:"
-        echo "${{ steps.semantic_release.outputs }}"
+        echo "previous_version=${{ steps.semantic_release.outputs.previous_version }}"
+        echo "version=${{ steps.semantic_release.outputs.version }}"
         echo "PREV_VERSION=${{ steps.semantic_release.outputs.previous_version }}" >> $GITHUB_ENV
         echo "NEW_VERSION=${{ steps.semantic_release.outputs.version }}" >> $GITHUB_ENV
         echo "Previous version: $PREV_VERSION"
