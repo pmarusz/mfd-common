@@ -42,7 +42,7 @@ jobs:
         mfd-create-config-files --project-dir .
     - name: Run python-semantic-release
       id: semantic_release
-      uses: python-semantic-release/python-semantic-release@v10.2.0
+      uses: python-semantic-release/python-semantic-release@v10.3.1
       with:
         build: false
         vcs_release: true
@@ -58,8 +58,8 @@ jobs:
         echo "version=${{ steps.semantic_release.outputs.version }}"
         echo "PREV_VERSION=${{ steps.semantic_release.outputs.previous_version }}" >> $GITHUB_ENV
         echo "NEW_VERSION=${{ steps.semantic_release.outputs.version }}" >> $GITHUB_ENV
-        echo "Previous version: $env.PREV_VERSION"
-        echo "Version after bump: $env.NEW_VERSION"
+        echo "Previous version: $PREV_VERSION"
+        echo "Version after bump: $NEW_VERSION"
     - name: Clean pyproject.toml changes
       run: git checkout -- pyproject.toml    
     - name: Update version in pyproject.toml
