@@ -53,15 +53,13 @@ jobs:
         verbosity: 2      
     - name: Get old/new versions from semantic-release
       run: |
-        echo "Semantic Release Output:"
-        # echo "previous_version=${{ steps.semantic_release.outputs.previous_version }}"
-        # echo "version=${{ steps.semantic_release.outputs.version }}"
+        echo "Semantic Release Output:"        
         echo "PREV_VERSION=${{ steps.semantic_release.outputs.previous_version }}" >> $GITHUB_ENV
         echo "NEW_VERSION=${{ steps.semantic_release.outputs.version }}" >> $GITHUB_ENV
         echo "Previous version: $PREV_VERSION"
         echo "Version after bump: $NEW_VERSION"
     - name: Clean pyproject.toml changes
-      run: git checkout -- pyproject.toml    
+      run: git status && git checkout -- pyproject.toml && git status
     - name: Update version in pyproject.toml
       run: |
         sed "s/$PREV_VERSION/$NEW_VERSION/" -i pyproject.toml
