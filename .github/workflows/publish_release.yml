@@ -54,8 +54,8 @@ jobs:
     - name: Get old/new versions from semantic-release
       run: |
         echo "Semantic Release Output:"
-        echo "previous_version=${{ steps.semantic_release.outputs.previous_version }}"
-        echo "version=${{ steps.semantic_release.outputs.version }}"
+        # echo "previous_version=${{ steps.semantic_release.outputs.previous_version }}"
+        # echo "version=${{ steps.semantic_release.outputs.version }}"
         echo "PREV_VERSION=${{ steps.semantic_release.outputs.previous_version }}" >> $GITHUB_ENV
         echo "NEW_VERSION=${{ steps.semantic_release.outputs.version }}" >> $GITHUB_ENV
         echo "Previous version: $PREV_VERSION"
