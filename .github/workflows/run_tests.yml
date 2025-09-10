@@ -126,9 +126,6 @@ jobs:
     - name: Run Unit Tests
       shell: bash
       run: |
-        pushd ${{ inputs.SOURCE_PATH }}
-        git fetch && git checkout ${{ inputs.TARGET_BRANCH }} && git checkout ${{ inputs.BRANCH_NAME }}
-        popd
         source ${{ inputs.VIRTUALENV_PATH }}/*/activate
         python --version
         pushd ${{ inputs.SOURCE_PATH }}
