@@ -56,8 +56,6 @@ jobs:
       uses: actions/checkout@v4
       with:
         path: ${{ inputs.SOURCE_PATH }}
-        repository: ${{ inputs.REPOSITORY_NAME }}
-        ref: ${{ inputs.BRANCH_NAME }}
 
     - name: Determine if unit and functional tests should run
       id: tests_path_existence
@@ -126,9 +124,6 @@ jobs:
     - name: Run Unit Tests
       shell: bash
       run: |
-        pushd ${{ inputs.SOURCE_PATH }}
-        git fetch origin && git rebase --rebase-merges origin/main
-        popd
         source ${{ inputs.VIRTUALENV_PATH }}/*/activate
         python --version
         pushd ${{ inputs.SOURCE_PATH }}
