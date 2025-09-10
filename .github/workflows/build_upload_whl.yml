@@ -59,22 +59,7 @@ jobs:
           ref: ${{ inputs.BRANCH_NAME }}
           repository: ${{ inputs.REPOSITORY_NAME }}
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ inputs.PYTHON_VERSION }}
-          cache: 'pip'
-
-      - name: Show python version
-        run: python --version
-
-      - name: Run mfd-create-config-files
-        run: |
-          pip install -r requirements-dev.txt
-          mfd-create-config-files --project-dir .
-
       - name: Check if bump version is expected
-        id: check_bump
         run: |
           COMMIT_MSG=$(git log -1 --pretty=%B)
           if echo "$COMMIT_MSG" | grep -Ei '^(docs|test|ci|refactor|perf|chore|revert):\s'; then
@@ -84,6 +69,23 @@ jobs:
             echo "CREATE_WHL=true" >> $GITHUB_ENV
             echo "Version bump needed for commit message: $COMMIT_MSG, continuing job"
           fi
+
+      - name: Set up Python
+        if: env.CREATE_WHL == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Show python version
+        if: env.CREATE_WHL == 'true'
+        run: python --version
+
+      - name: Run mfd-create-config-files
+        if: env.CREATE_WHL == 'true'
+        run: |
+          pip install -r requirements-dev.txt
+          mfd-create-config-files --project-dir .   
 
       - name: Run python-semantic-release
         if: env.CREATE_WHL == 'true'
