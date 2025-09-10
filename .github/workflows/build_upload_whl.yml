@@ -85,7 +85,7 @@ jobs:
           fi
 
       - name: Run python-semantic-release without version bump - force patch bump
-        if: env.CREATE_WHL == false
+        if: env.CREATE_WHL == 'false'
         uses: python-semantic-release/python-semantic-release@v10.3.1
         with:
           build: true
@@ -95,7 +95,7 @@ jobs:
           force: patch
 
       - name: Run python-semantic-release
-        if: env.CREATE_WHL == true
+        if: env.CREATE_WHL == 'true'
         uses: python-semantic-release/python-semantic-release@v10.3.1
         with:
           build: true
@@ -109,7 +109,7 @@ jobs:
           python -m pip install dist/*.whl
 
       - name: Publish package distributions to PyPI
-        if: env.CREATE_WHL == true && inputs.RELEASE_BUILD == true && inputs.RELEASE_STEPS == true
+        if: env.CREATE_WHL == 'true' && inputs.RELEASE_BUILD == true && inputs.RELEASE_STEPS == true
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: 'dist'
