@@ -127,7 +127,7 @@ jobs:
       shell: bash
       run: |
         pushd ${{ inputs.SOURCE_PATH }}
-        git fetch origin && git merge origin/main
+        git fetch origin && git rebase --rebase-merges origin/main
         popd
         source ${{ inputs.VIRTUALENV_PATH }}/*/activate
         python --version
