@@ -10,7 +10,7 @@ inputs:
     type: string
   BRANCH_NAME:
     description: 'Branch name to checkout'
-    required: true
+    required: false
     type: string
   REPOSITORY_NAME:
     description: 'Repository name'
