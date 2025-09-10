@@ -73,15 +73,20 @@ jobs:
           pip install -r requirements-dev.txt
           mfd-create-config-files --project-dir .   
 
-      - name: Check if bump version is expected
+      - name: Check if bump version is expected        
         run: |
-          COMMIT_MSG=$(git log -1 --pretty=%B)
-          if echo "$COMMIT_MSG" | grep -Ei '^(docs|test|ci|refactor|perf|chore|revert):\s'; then
-            echo "CREATE_WHL=false" >> $GITHUB_ENV
-            echo "No version bump needed for commit message: $COMMIT_MSG, ending job"
+          if [ "${{ inputs.RELEASE_BUILD }}" = "false" ]; then
+            COMMIT_MSG=$(git log -1 --pretty=%B)
+
+            if echo "$COMMIT_MSG" | grep -Ei '^(docs|test|ci|refactor|perf|chore|revert):\s'; then
+              echo "CREATE_WHL=false" >> $GITHUB_ENV
+              echo "No version bump needed for commit message: $COMMIT_MSG, ending job"
+            else
+              echo "CREATE_WHL=true" >> $GITHUB_ENV
+              echo "Version bump needed for commit message: $COMMIT_MSG, continuing job"
+            fi
           else
             echo "CREATE_WHL=true" >> $GITHUB_ENV
-            echo "Version bump needed for commit message: $COMMIT_MSG, continuing job"
           fi
 
       - name: Run python-semantic-release without version bump - force patch bump
