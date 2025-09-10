@@ -86,6 +86,7 @@ jobs:
               echo "Version bump needed for commit message: $COMMIT_MSG, continuing job"
             fi
           else
+            echo "Skipping commit message check for release build"
             echo "CREATE_WHL=true" >> $GITHUB_ENV
           fi
 
