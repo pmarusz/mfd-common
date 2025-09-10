@@ -127,7 +127,7 @@ jobs:
       shell: bash
       run: |
         pushd ${{ inputs.SOURCE_PATH }}
-        git fetch
+        git fetch origin main:main && git log -1
         popd
         source ${{ inputs.VIRTUALENV_PATH }}/*/activate
         python --version
