@@ -57,7 +57,7 @@ jobs:
       with:
         path: ${{ inputs.SOURCE_PATH }}
         repository: ${{ inputs.REPOSITORY_NAME }}
-        ref: ${{ inputs.BRANCH_NAME }}
+        ref: ${{ github.ref }}
 
     - name: Determine if unit and functional tests should run
       id: tests_path_existence
@@ -97,7 +97,6 @@ jobs:
     - uses: ./common_actions/.github/prepare_test_env
       with:
         PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
-        BRANCH_NAME: ${{ inputs.BRANCH_NAME }}
         REPOSITORY_NAME: ${{ inputs.REPOSITORY_NAME }}
     - name: Run Functional Tests
       shell: bash
@@ -121,7 +120,6 @@ jobs:
     - uses: ./common_actions/.github/prepare_test_env
       with:
         PYTHON_VERSION: ${{ inputs.PYTHON_VERSION }}
-        BRANCH_NAME: ${{ inputs.BRANCH_NAME }}
         REPOSITORY_NAME: ${{ inputs.REPOSITORY_NAME }}
     - name: Run Unit Tests
       shell: bash
