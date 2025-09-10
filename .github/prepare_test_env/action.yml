@@ -30,6 +30,7 @@ runs:
     with:
       path: ${{ inputs.SOURCE_PATH }}
       repository: ${{ inputs.REPOSITORY_NAME }}
+      ref: ${{ inputs.BRANCH_NAME }}
 
   - name: Set up Python
     uses: actions/setup-python@v5
