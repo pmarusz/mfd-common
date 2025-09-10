@@ -77,10 +77,12 @@ jobs:
         id: check_bump
         run: |
           COMMIT_MSG=$(git log -1 --pretty=%B)
-          if echo "$COMMIT_MSG" | grep -Ei '^(feat|fix|BREAKING CHANGE):\s'; then
-            echo "CREATE_WHL=true" >> $GITHUB_ENV
-          else
+          if echo "$COMMIT_MSG" | grep -Ei '^(docs|test|ci|refactor|perf|chore|revert):\s'; then
             echo "CREATE_WHL=false" >> $GITHUB_ENV
+            echo "No version bump needed for commit message: $COMMIT_MSG, ending job"
+          else
+            echo "CREATE_WHL=true" >> $GITHUB_ENV
+            echo "Version bump needed for commit message: $COMMIT_MSG, continuing job"
           fi
 
       - name: Run python-semantic-release
